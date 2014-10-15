@@ -15,17 +15,17 @@ class Counter:
 
 
 class Farm:
-    def __init__(self, area):
+    def __init__(self, eutopia, area):
         self.area = area
         self.last_activity = None
         self.counter = Counter()
+        self.eutopia = eutopia
 
     def update(self):
         self.counter.update(self.last_activity.counters)
 
     def copy(self):
-        f = Farm(self.area)
+        f = Farm(self.eutopia, self.area)
         f.last_activity = self.last_activity
-        f.counter = Counter()
         f.counter.data.update(self.counter.data)
         return f

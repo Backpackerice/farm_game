@@ -167,7 +167,7 @@ class Server(farm_game.swi.SimpleWebInterface):
         keys = [k for k in data.keys() if k.startswith('act_')]
 
         time = []
-        for i in range(2):
+        for i in range(len(keys)):
             color = ['blue', 'green', 'red', 'magenta', 'cyan', 'black'][i % 6]
 
             key = keys[i]

@@ -2,16 +2,20 @@ import activity
 import intervention
 from farm import Farm
 from family import Family
+import numpy as np
 
 class Eutopia:
-    def __init__(self, farm_count=100):
+    def __init__(self, farm_count=100, rng=None):
         self.activities = activity.Activities()
+        if rng is None:
+            rng = np.random.RandomState()
+        self.rng = rng
 
         self.time = 0
 
         self.farms = []
         for i in range(farm_count):
-            farm = Farm(area=100)
+            farm = Farm(eutopia=self, area=100)
             self.farms.append(farm)
 
         self.families = []
@@ -40,7 +44,7 @@ class Eutopia:
 if __name__=='__main__':
 
     interventions = []
-    eutopia = Eutopia(farm_count=100)
+    eutopia = Eutopia(farm_count=100, rng=np.random.RandomState(seed=1))
 
     '''
     interventions.append(intervention.PriceIntervention(5, 'duramSeed', 10))

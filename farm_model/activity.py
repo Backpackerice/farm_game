@@ -64,7 +64,7 @@ activities = {
             'shelfLifeWeeks': 1, 		# weeks from picking
         	},
         'products': {
-            'peachesBabyGold': 35, 		# total tons per km^2/year
+            'peachesBabyGold': '35 if farm.counter.baby_gold > 7 else 0', 		# total tons per km^2/year
             'nitrogen': -10,		# kg per km^2/year
             'carbon': 20,		# tons per km^2/year
             'soil': -0.001,		# inches per km^2/year
@@ -85,7 +85,8 @@ activities = {
             'shelfLifeWeeks': 1, 		# weeks from picking
         	},
         'products': {
-            'peachesOrganicBabyGold': 30, 		# total tons per km^2?
+            'peachesOrganicBabyGold': '30 if farm.counter.baby_gold > 7 and farm.counter.organic > 3 else 0', 		# total tons per km^2?
+            'peachesBabyGold': '30 if farm.counter.baby_gold > 7 and farm.counter.organic <= 3 else 0', 		# total tons per km^2?
             'nitrogen': 0,
             'carbon': 10,		# tons per km^2?
             'soil': 0.001,		# inches per km^2?
@@ -119,13 +120,12 @@ activities = {
         },
     }
 
-import random
 class Normal:
     def __init__(self, mean, sd):
         self.mean = mean
         self.sd = sd
-    def value(self):
-        return random.gauss(self.mean, self.sd)
+    def value(self, rng):
+        return rng.randn()*self.sd + self.mean
     def __mul__(self, scale):
         return Normal(self.mean*scale, self.sd*scale)
 
@@ -135,7 +135,9 @@ aggregate_measures = {
     'money': {
         #'duramSeed': Normal(50,10),
         'peachesRedhaven': Normal(55,10),
+        'peachesBabyGold': Normal(55,10),
         'peachesOrganicRedhaven': Normal(65,10),
+        'peachesOrganicBabyGold': Normal(65,10),
         #'duramSeedOrganic': Normal(55,10),
         'labour': Normal(5,1),
         'certification': Normal(1,0),
@@ -171,7 +173,7 @@ class Activity:
             total = 0
             for item, distribution in self.aggregate_measures[key].items():
                 if item in self.products.keys():
-                    weight = distribution.value()
+                    weight = distribution.value(farm.eutopia.rng)
                     total += weight*self.get_product(item, farm)
             return total
 

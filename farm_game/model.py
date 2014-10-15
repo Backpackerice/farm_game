@@ -9,9 +9,10 @@ class Model:
 
     def __init__(self, seed=None):
         self.rng = np.random.RandomState(seed=seed)
-        self.model = farm_model.eutopia.Eutopia(farm_count=Model.farm_count)
+        self.model = farm_model.eutopia.Eutopia(farm_count=Model.farm_count,
+                                                rng=self.rng)
 
-        self.steps = -2    # starting time step
+        self.steps = -10    # starting time step
         self.interventions = []
         self.data = {}
         self.init_data()
