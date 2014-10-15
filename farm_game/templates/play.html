@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Play: Employment Game Prototype</title>
+    <meta charset="utf-8">
+    
+    <script src="static/js/d3.v3.js", type="text/javascript"></script>
+    <script src="static/js/d3.tip.js", type="text/javascript"></script>
+    <script src="static/js/nv.d3.js", type="text/javascript"></script>
+    <script src="static/js/nvd3/tooltip.js"></script>
+    <script src="static/js/nvd3/utils.js"></script>
+    <script src="static/js/nvd3/interactiveLayer.js"></script>
+    <script src="static/js/nvd3/models/legend.js"></script>
+    <script src="static/js/nvd3/models/axis.js"></script>
+    <script src="static/js/nvd3/models/scatter.js"></script>
+    <script src="static/js/nvd3/models/line.js"></script>
+    <script src="static/js/nvd3/models/lineChart.js"></script>
+    <link href="static/css/nv.d3.css" rel="stylesheet" type="text/css">
+    <link href="static/css/teststyle.css" rel="stylesheet" type="text/css">
+    
+</head>
+
+<body>
+
+    <div id='top_bar'>
+    <div id='title'>
+      Interventions
+    </div>
+
+    <div id='controls'>
+        <!--Interventions-->
+        <div id='cen'>
+        Name: <input id='username' type='text' value='%(name)s' onchange='update_name();'/>
+        <input type='button' value='restart' onclick='doaction("init", this.value);'/>
+        <input type='button' value='no new interventions' onclick='doaction("nothing", this.value);'/>
+        <input type='button' value='undo' onclick='doaction("undo", this.value)';/>
+        Game #: <input id='seed' type='text' value='%(seed)s' onchange='update_seed();'/>
+        <br/>
+        <table class='interventions'>
+        <tr><th>Mobility</th><th>Childcare</th><th>Highschool</th>
+            <th>Skills Transfer</th><th>Supportive Hiring</th>
+            <th>Job Requirements</th><th>Relocation</th></tr>
+        <tr>    
+            <td><input type='button' value='Low' onclick='doaction("mobility-low", this.value, "Mobility");'/></td>
+            <td><input type='button' value='Low' onclick='doaction("childcare-low", this.value, "Childcare");'/></td>
+            <td><input type='button' value='Low' onclick='doaction("highschool-low", this.value, "Highschool");'/></td>
+            <td><input type='button' value='Low' onclick='doaction("sectormobility-low", this.value, "Skills Transfer");'/></td>
+            <td><input type='button' value='Low' onclick='doaction("povertybias-low", this.value, "Supportive Hiring");'/></td>
+            <td><input type='button' value='Low' onclick='doaction("hsnotrequired-low", this.value, "Job Requirements");'/></td>
+            <td><input type='button' value='Low' onclick='doaction("move-1", this.value, "Relocation");'/></td>
+        </tr>    
+        <tr>    
+            <td><input type='button' value='Med' onclick='doaction("mobility-med", this.value, "Mobility");'/></td>
+            <td><input type='button' value='Med' onclick='doaction("childcare-med", this.value, "Childcare");'/></td>
+            <td><input type='button' value='Med' onclick='doaction("highschool-med", this.value, "Highschool");'/></td>
+            <td><input type='button' value='Med' onclick='doaction("sectormobility-med", this.value, "Skills Transfer");'/></td>
+            <td><input type='button' value='Med' onclick='doaction("povertybias-med", this.value, "Supportive Hiring");'/></td>
+            <td><input type='button' value='Med' onclick='doaction("hsnotrequired-med", this.value, "Job Requirements");'/></td>
+            <td><input type='button' value='Med' onclick='doaction("move-2", this.value, "Relocation");'/></td>
+        </tr>    
+        <tr>    
+            <td><input type='button' value='High' onclick='doaction("mobility-high", this.value, "Mobility");'/></td>
+            <td><input type='button' value='High' onclick='doaction("childcare-high", this.value, "Childcare");'/></td>
+            <td><input type='button' value='High' onclick='doaction("highschool-high", this.value, "Highschool");'/></td>
+            <td><input type='button' value='High' onclick='doaction("sectormobility-high", this.value, "Skills Transfer");'/></td>
+            <td><input type='button' value='High' onclick='doaction("povertybias-high", this.value, "Supportive Hiring");'/></td>
+            <td><input type='button' value='High' onclick='doaction("hsnotrequired-high", this.value, "Job Requirements");'/></td>
+            <td><input type='button' value='High' onclick='doaction("move-3", this.value, "Relocation");'/></td>
+        </tr>    
+        </table>
+        </div>
+    </div>
+    </div>
+    
+      <div id='grid'>
+        <svg></svg>
+      </div>
+
+      <div class='chart full' id='chart_time'>
+        <svg></svg>
+      </div>
+
+      <!--
+      <div id='chart_race_pie'>
+        <svg></svg>
+      </div>
+
+      <div id='chart_money'>
+        <svg></svg>
+      </div>
+
+      <div id='chart_race'>
+        <svg></svg>
+      </div>
+      
+      -->
+      
+      <div class='score' id='score'>
+            
+      </div>
+    
+    <div id='logo'>
+      <img src="/static/img/hi-logos.png" />
+    </div>
+      
+<script>
+
+function update_name() {
+    name = document.getElementById('username').value
+    var data = new FormData();
+    data.append('uuid', '%(uuid)s');
+    data.append('name', name);
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/set_name', true);
+    xhr.send(data);
+}
+
+function update_seed() {
+    seed = document.getElementById('seed').value
+    var data = new FormData();
+    data.append('uuid', '%(uuid)s');
+    data.append('seed', seed);
+    data.append('action', 'init');
+    data.append('action_text', '');
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/play.json', true);
+    xhr.onload = update;
+    xhr.send(data);
+}
+
+
+
+var chart_time;
+nv.addGraph(function() {
+    chart_time = nv.models.lineChart()
+                    .useInteractiveGuideline(true)
+                    .forceY([0, 100])
+     .options({
+    margin: {left: 100, bottom: 40},
+    showXAxis: true,
+    showYAxis: true,
+    transitionDuration: 250
+  })
+                    
+                    
+                    
+    chart_time.xAxis     //Chart x-axis settings
+      .axisLabel('Time')
+      .tickFormat(d3.format(',.2f'));                    
+    chart_time.yAxis    
+      .axisLabel('Percentage')
+      .tickFormat(d3.format(',.2f'));      
+  
+    return chart_time;
+    });
+
+var chart_race;
+nv.addGraph(function() {
+    chart_race = nv.models.lineChart()
+                    .useInteractiveGuideline(true)
+                    .forceY([0, 100])
+     .options({
+    margin: {left: 80, bottom: 30},
+    showXAxis: false,
+    showYAxis: true,
+    transitionDuration: 250
+  })
+                    
+                    
+                    
+    chart_race.xAxis     //Chart x-axis settings
+      .axisLabel('Time')
+      .tickFormat(d3.format(',.2f'));                    
+    chart_race.yAxis    
+      .axisLabel('Employment Percentage')
+      .tickFormat(d3.format(',.2f'));      
+  
+    return chart_race;
+    });
+
+var chart_race_pie;
+nv.addGraph(function() {
+    chart_race_pie = nv.models.pieChart()
+       .x(function(d) { return d.label })
+       .y(function(d) { return d.value })
+       .showLabels(true);
+       
+    return chart_race_pie;   
+  })
+                    
+var chart_money;
+nv.addGraph(function() {
+    var bar_labels = ['production', 'cost(private)', 'cost(public)'];
+    chart_money = nv.models.multiBarChart()
+       .reduceXTicks(false)   //If 'false', every single x-axis tick label will be rendered.
+       .rotateLabels(0)      //Angle to rotate x-axis labels.
+       .showControls(false)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
+       .groupSpacing(0.1)    //Distance between each group of bars.
+       .showXAxis(true)
+       .margin({left:150, bottom:30})
+       .transitionDuration(10)
+       .stacked(true);
+       
+       
+    chart_money.xAxis
+        .tickFormat(function(d) { return bar_labels[d];});                   
+    chart_money.yAxis
+        .tickFormat(d3.format(',.1f'));
+       
+    return chart_money;   
+  })
+    
+    
+
+function doaction(action, text, type) {
+    console.log(action);
+    
+    var data = new FormData();
+    data.append('action', action);
+    if (type == undefined) {
+        data.append('action_text', text);    
+    } else {
+        data.append('action_text', type + '(' + text+ ')');
+    }
+    data.append('uuid', "%(uuid)s");
+    
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', '/play.json', true);
+    xhr.onload = update;
+    xhr.send(data);
+}
+
+function update() {
+	data = JSON.parse(this.responseText);
+    
+    steps = data.time[0].values.length;
+    score = 100;
+    
+        
+    if (steps==102) {
+            document.getElementById("score").className = 'score final';
+            document.getElementById("score").innerHTML="FINAL SCORE: <strong>"+score.toFixed(1)+"%%</strong>";
+    } else {
+            document.getElementById("score").className = 'score';
+            document.getElementById("score").innerHTML="<p>"+data.actions+"</p>SCORE: <strong>"+score.toFixed(1)+"%%</strong>";
+    }
+    
+    d3.select('#chart_time svg')
+        .datum(data.time)
+        .call(chart_time);
+    nv.utils.windowResize(chart_time.update);
+    
+    d3.select('#chart_race svg')
+        .datum(data.race)
+        .call(chart_race);
+    nv.utils.windowResize(chart_race.update);
+
+    d3.select('#chart_race_pie svg')
+        .datum(data.race_pie)
+        .call(chart_race_pie);
+    nv.utils.windowResize(chart_race_pie.update);
+
+    console.log(data.money);
+    d3.select('#chart_money svg')
+        .datum(data.money)
+        .call(chart_money);
+    nv.utils.windowResize(chart_money.update);
+    
+    update_grid(data.grid);    
+}
+
+doaction('init');
+
+function update_grid(grid_data) {
+    var width = 300.0;
+    var height = 300.0;
+    var cols = 14;
+    var rows = 14;
+    
+    svg = d3.select('#grid svg')
+    svg.selectAll("*").remove()    
+    grid = svg.append('g');
+
+    var dx = width / cols;
+    var dy = height / rows;
+    if (dy < dx) dx = dy;
+    else dy = dx;
+    
+    /*
+    grid.append('line')
+        .attr('x1', dx*cols/2)
+        .attr('x2', dx*cols/2)
+        .attr('y1', 0)
+        .attr('y2', dx*rows);
+    grid.append('line')
+        .attr('y1', dx*cols/2)
+        .attr('y2', dx*cols/2)
+        .attr('x1', 0)
+        .attr('x2', dx*rows);
+    */
+    
+    
+    for (var i=0; i<grid_data.length; i++) {
+    
+        tip = d3.tip().attr('class', 'tooltip')
+                      .html(grid_data[i].info)
+                      .direction('e');
+        svg.call(tip);
+        
+        if (grid_data[i].type == 'person') {
+            x = (grid_data[i].x + 0.5) * dx;
+            y = (grid_data[i].y + 0.5) * dy;
+            transform = 'translate(' + x + ' ' + y + ')';
+            grid.append('circle')
+                         .attr('r', dx/2-1)
+                         .attr('fill', grid_data[i].color)
+                         .attr('transform', transform)
+                         .on('mouseover', tip.show)
+                         .on('mouseout', tip.hide);
+            
+        } else {
+            x = (grid_data[i].x) * dx;
+            y = (grid_data[i].y) * dy;
+            transform = 'translate(' + x + ' ' + y + ')';
+            grid.append('rect')
+                .attr('width', dx)
+                .attr('height', dx)
+                .attr('fill', grid_data[i].color)
+                .attr('transform', transform)
+                .on('mouseover', tip.show)
+                 .on('mouseout', tip.hide);
+                
+        
+        
+        }
+    }
+}    
+
+
+</script>      
+      
+</body>
+</html>

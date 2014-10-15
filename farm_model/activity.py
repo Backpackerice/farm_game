@@ -27,9 +27,9 @@ activities = {
             'dolphin': -17,
             }
         },
-    }    
-   
-import random   
+    }
+
+import random
 class Normal:
     def __init__(self, mean, sd):
         self.mean = mean
@@ -38,8 +38,8 @@ class Normal:
         return random.gauss(self.mean, self.sd)
     def __mul__(self, scale):
         return Normal(self.mean*scale, self.sd*scale)
-        
-        
+
+
 
 aggregate_measures = {
     'money': {
@@ -54,17 +54,17 @@ aggregate_measures = {
         'carbon': Normal(1,0),
         'dolphin': Normal(10,100),
         },
-    }    
+    }
 
-    
-    
+
+
 class Activity:
     def __init__(self, name, equipment, products, aggregate_measures):
         self.name = name
         self.equipment = equipment
         self.products = products
         self.aggregate_measures = aggregate_measures
-    
+
     def get_product(self, key, farm):
         if key in self.products.keys():
             return self.products[key]*farm.area
@@ -75,16 +75,19 @@ class Activity:
                     weight = distribution.value()
                     total += weight*self.products[item]*farm.area
             return total
-    
+
         raise Exception('Could not find product "%s"'%key)
 
 class Activities:
     def __init__(self):
         self.aggregates = dict(aggregate_measures)
-        
+
         self.activities = []
         for name, data in activities.items():
             self.activities.append(Activity(name, aggregate_measures=self.aggregates, **data))
-    
+
+    def keys(self):
+        return [a.name for a in self.activities]
+
 if __name__=='__main__':
     activities = Activities()

@@ -46,9 +46,9 @@ class Server(farm_game.swi.SimpleWebInterface):
         data = pkgutil.get_data('farm_game', fn)
         return (mimetype, data)
 
-    def swi_favicon_ico(self):
-        icon = pkgutil.get_data('farm_game', 'static/favicon.ico')
-        return ('image/ico', icon)
+    #def swi_favicon_ico(self):
+    #    icon = pkgutil.get_data('farm_game', 'static/favicon.ico')
+    #    return ('image/ico', icon)
 
     def swi(self):
         if self.user is None:
@@ -83,6 +83,8 @@ class Server(farm_game.swi.SimpleWebInterface):
             color = ['blue', 'red', 'green', 'magenta', 'cyan', 'black'][i % 6]
             key = names[uuid]
 
+            '''
+
             employment = data[uuid]['employment'][-1]
             runtime = len(data[uuid]['production']) * 0.1
             production = sum(data[uuid]['production']) / runtime
@@ -98,6 +100,8 @@ class Server(farm_game.swi.SimpleWebInterface):
                 score = 0
             values = [dict(x=0, y=score), dict(x=1, y=employment)
                       ]
+            '''
+            values = [dict(x=0, y=100), dict(x=1, y=50)]
             bar.append(dict(values=values, key=key, color=color))
 
 
@@ -140,7 +144,7 @@ class Server(farm_game.swi.SimpleWebInterface):
 
     def swi_play_json(self, uuid, action, action_text, seed=None):
         maximum = 10
-        substeps = 10
+        substeps = 1
         name = self.get_name(uuid)
         if action == 'init':
             actions[uuid] = []
@@ -163,15 +167,17 @@ class Server(farm_game.swi.SimpleWebInterface):
         time = []
         for i in range(2):
             color = ['blue', 'green', 'red', 'magenta', 'cyan', 'black'][i % 6]
-            key = ['employment', 'highschool'][i]
+            key = ['act_durumWheatConventional', 'act_durumWheatGreen'][i]
             values = []
             for j in range(len(data[key])):
                 values.append(dict(x=float(j)/substeps, y=data[key][j]))
             values.append(dict(x=maximum, y=None))
             time.append(dict(values=values, key=key, color=color, area=False))
 
+
         race = []
         race_pie = []
+        '''
         for k in sorted(data.keys()):
             if k.startswith('employment_'):
                 key = k[11:]
@@ -184,11 +190,13 @@ class Server(farm_game.swi.SimpleWebInterface):
 
                 p = data['proportion_%s' % key]
                 race_pie.append(dict(label=key, value=p[-1], color=color))
-
+        '''
 
         grid = data['grid']
 
+
         money = []
+        '''
         runtime = len(data['production']) * 0.1
         production = sum(data['production']) / runtime
         cost_hiring = sum(data['cost_hiring']) / runtime
@@ -199,6 +207,7 @@ class Server(farm_game.swi.SimpleWebInterface):
         money.append(dict(key='hiring', values=[{'x':0, 'y':0}, {'x':1, 'y':cost_hiring}, {'x':2, 'y':0}]))
         money.append(dict(key='salary', values=[{'x':0, 'y':0}, {'x':1, 'y':cost_salary}, {'x':2, 'y':0}]))
         money.append(dict(key='intervention', values=[{'x':0, 'y':0}, {'x':1, 'y':interv_private}, {'x':2, 'y':interv_public}]))
+        '''
 
         a = action_texts[uuid][1:]
         a = ['%d: %s' % (i+1,x) for i,x in enumerate(a)]

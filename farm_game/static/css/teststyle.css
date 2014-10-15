@@ -1,0 +1,193 @@
+body {
+  overflow-y:scroll;
+  font-family: arial;
+}
+
+text {
+  font: 12px sans-serif;
+}
+
+.chart {
+  /*float:left;*/ /* No */
+  height: 500px;
+  text-align: center;
+  font-weight: bold;
+  /*margin-bottom: 2em;*/
+}
+.chart.full {
+  width: 80%;
+  height: 50%;
+  margin-left: auto; margin-right: auto;
+}
+
+.chart.half {
+  width: 50%;
+}
+
+.chart.third {
+  width: 33%;
+}
+
+.chart.selected {
+  width: 100% !important;
+}
+
+.navigation a{
+  margin-right: 1em;
+}
+
+.navigation {
+  margin-bottom: 1em;
+}
+
+@font-face {
+  font-family: "Quicksand";
+  src: url(/static/font/quicksand/Quicksand-Regular.otf);
+}
+
+body, button, input {
+  font-family: "Quicksand";
+}
+
+/*
+// interventions to top
+// change font
+// thick grey line
+// title logo
+*/  
+
+#top_bar {
+  margin-bottom: 0.5em;
+}
+
+#logo {
+}
+
+#logo>img {
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;  /* this too, probably */
+  display: block; /*required for margin-centering to take effect */
+  
+  
+  margin-top: 70px;
+}
+
+/* XXX sketchiness with borders: the #logo is not respecting the margin on the hr, but adding copious padding to the #logo>img makes it look alright*/
+
+hr {
+  border: 0;
+  height: 0; 
+  /* trick from http://css-tricks.com/examples/hrs/ */
+  box-shadow: 0 0 10px 1px black;
+  margin: 30px;  
+}
+
+
+#title {
+  display: inline-block;
+  background-color: orange;
+  padding: 30px;
+  margin: 10px;
+  font-size: 20pt;
+  text-align: center;
+  width: 240px;
+  vertical-align: top;
+}
+#controls {
+  vertical-align: top;
+  display: inline-block;
+  width: calc(100%-260px);
+  margin: 0px;
+  padding: 0px;
+}
+
+
+div.score {
+    position: absolute;
+   background: #ddd;
+    right: 20px;
+    bottom: 40px;
+   margin-left:20%;
+   font-size: 20pt;
+   padding: 1em;
+   }
+   
+div.score p {
+   font-size: 14pt;
+   padding: 0px;
+   margin: 0px;
+   margin-bottom: 1em;
+}   
+   
+div.final {
+   background: yellow;
+   font-size: 30pt;
+   }
+   
+div#grid {
+    background: #ddd;
+    display: inline-block;
+    margin-left: 10px;
+    width: 300px;
+    height: 300px;    
+   }
+
+div#chart_time {
+    display: inline-block;
+    width: 50%;
+    height: 300px;    
+   }
+   
+div#chart_race {
+    display: inline-block;
+    width: 50%;
+    height: 200px;    
+   }
+
+div#chart_race_pie {
+    display: none;
+    width: 30%;
+    height: 200px;    
+   }
+
+div#chart_money {
+    display: inline-block;
+    width: 30%;
+    height: 200px;    
+   }
+   
+div#logo {
+    width:100%;
+}   
+   
+   
+#grid svg g circle {
+    stroke-width:0px;
+}
+#grid svg g line {
+    stroke-width:1px;
+    stroke: white;
+}
+
+.tooltip {
+    background: white;
+    border: solid 1px black;
+    font-size: 10pt;
+    padding: 5px;
+}
+
+.tooltip h1 {
+    font-size:14pt;
+    padding: 0px;
+    margin: 0px;
+}
+
+table.interventions td input{
+    width: 100%;
+    }
+table.interventions th{
+    font-size:10pt;
+    padding-left: 10px;
+    padding-right: 10px;
+    }    
