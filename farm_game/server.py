@@ -164,15 +164,18 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         data = self.run_game(uuid)
 
+        keys = [k for k in data.keys() if k.startswith('act_')]
+
         time = []
         for i in range(2):
             color = ['blue', 'green', 'red', 'magenta', 'cyan', 'black'][i % 6]
-            key = ['act_durumWheatConventional', 'act_durumWheatGreen'][i]
+
+            key = keys[i]
             values = []
             for j in range(len(data[key])):
                 values.append(dict(x=float(j)/substeps, y=data[key][j]))
             values.append(dict(x=maximum, y=None))
-            time.append(dict(values=values, key=key, color=color, area=False))
+            time.append(dict(values=values, key=key[4:], color=color, area=False))
 
 
         race = []

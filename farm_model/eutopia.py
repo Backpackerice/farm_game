@@ -42,6 +42,7 @@ if __name__=='__main__':
     interventions = []
     eutopia = Eutopia()
 
+    '''
     interventions.append(intervention.PriceIntervention(5, 'duramSeed', 10))
 
     interventions.append(intervention.PriceIntervention(7, 'duramSeedOrganic', 0.001))
@@ -60,7 +61,7 @@ if __name__=='__main__':
             }
         }
     interventions.append(intervention.NewActivityIntervention(7, 'magic', magic_activity))
-
+    '''
 
     time = 0
     def step():
@@ -81,9 +82,10 @@ if __name__=='__main__':
     print activities
 
     import pylab
-    pylab.plot(range(10), [a.get('durumWheatConventional',0) for a in activities])
-    pylab.plot(range(10), [a.get('durumWheatGreen',0) for a in activities])
-    pylab.plot(range(10), [a.get('magic',0) for a in activities])
+    for name in sorted(eutopia.activities.keys()):
+        pylab.plot(range(10), [a.get(name,0) for a in activities], label=name)
+
+    pylab.legend(loc='best')
     pylab.show()
 
 

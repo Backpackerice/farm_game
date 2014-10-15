@@ -1,31 +1,115 @@
 # TODO: think about fixed costs and non-linear (economies of scale)
 # TODO: include equipment
+
+# http://www.vinelandgrowers.com/index.php?p=Our_Fruit#Peaches
+# http://eap.mcgill.ca/MagRack/BAH/BAH%202.htm econ of fruit production
+
+
+
 activities = {
-    'durumWheatConventional': {
+	 # Fresh, mid August, freestone.
+    'peachesRedhavenConventional': {
         'equipment': ['tractor'],
+        'times': {
+        	'certificationDelayYears': 0,
+        	 'harvestStartYear': 7,
+        	 'harvestEndYear':	30,
+            'harvestStartWeek': 33, 	# mid august for 3 weeks?
+            'havestEndWeek': 36,
+            'shelfLifeWeeks': 1, 		# weeks from picking
+        	},
         'products': {
-            'duramSeed': -5,
-            'nitrogen': -10,
-            'carbon': 20,
-            'soil': -5,
-            'labour': -2000,
+            'peachesRedhaven': 35, 		# total tons per km^2/year
+            'nitrogen': -10,		# kg per km^2/year
+            'carbon': 20,		# tons per km^2/year
+            'soil': -0.001,		# inches per km^2/year
+            'labour': -200,		# hours per km^2/year
             'certification': 0,
-            'duram': 40,
-            'dolphin': -87,
-            }
+            },
+        'color': 'red',
         },
-    'durumWheatGreen': {
-        'equipment': ['tractor', 'plow'],
+    'peachesRedhavenOrganic': {
+        'equipment': ['tractor'],
+        'times': {
+        	'certificationDelayYears': 3,
+        	 'harvestStartYear': 7,
+        	 'harvestEndYear':	30,
+            'harvestStartWeek': 33, 	# mid august for 3 weeks?
+            'havestEndWeek': 36,
+            'shelfLifeWeeks': 1, 		# weeks from picking
+        	},
         'products': {
-            'duramSeedOrganic': -4,
+            'peachesOrganicRedhaven': 30, 		# total tons per km^2?
             'nitrogen': 0,
-            'carbon': 5,
-            'soil': -2,
-            'labour': -2000,
-            'certification': -500,
-            'duramOrganic': 40,
-            'dolphin': -17,
-            }
+            'carbon': 10,		# tons per km^2?
+            'soil': 0.001,		# inches per km^2?
+            'labour': -220,		# hours per km^2/year
+            'certification': 1000, # $/farm
+            },
+        'color': 'pink',
+        },
+
+	 # Canning, late August, freestone.
+    'peachesBabyGoldConventional': {
+        'equipment': ['tractor'],
+        'times': {
+        	'certificationDelayYears': 0,
+        	 'harvestStartYear': 7,
+        	 'harvestEndYear':	30,
+            'harvestStartWeek': 35, 	# late august for 3 weeks?
+            'havestEndWeek': 38,
+            'shelfLifeWeeks': 1, 		# weeks from picking
+        	},
+        'products': {
+            'peachesBabyGold': 35, 		# total tons per km^2/year
+            'nitrogen': -10,		# kg per km^2/year
+            'carbon': 20,		# tons per km^2/year
+            'soil': -0.001,		# inches per km^2/year
+            'labour': -200,		# hours per km^2/year
+            'certification': 0,
+            },
+        'color': 'yellow',
+        },
+    'peachesBabyGoldOrganic': {
+        'equipment': ['tractor'],
+        'times': {
+        	'certificationDelayYears': 3,
+        	 'harvestStartYear': 7,
+        	 'harvestEndYear':	30,
+            'harvestStartWeek': 35, 	# late august for 3 weeks?
+            'havestEndWeek': 38,
+            'shelfLifeWeeks': 1, 		# weeks from picking
+        	},
+        'products': {
+            'peachesOrganicBabyGold': 30, 		# total tons per km^2?
+            'nitrogen': 0,
+            'carbon': 10,		# tons per km^2?
+            'soil': 0.001,		# inches per km^2?
+            'labour': -220,		# hours per km^2/year
+            'certification': 1000, # $/farm
+            },
+        'color': 'gold',
+        },
+	 # Coronation seedless grapes, mid August through to end of September.
+    'grapesCoronationConventional': {
+        'equipment': ['tractor'],
+        'times': {
+        	'certificationDelayYears': 0,
+        	 'harvestStartYear': 3,		# check
+        	 'harvestEndYear':	30,
+            'harvestStartWeek': 35, 	# late august for 3 weeks?
+            'havestEndWeek': 38,
+            'shelfLifeWeeks': 1, 		# weeks from picking
+        	},
+        'products': {
+            'grapes': 35, 		# total tons per km^2/year
+            'nitrogen': -10,		# kg per km^2/year
+            'carbon': 20,		# tons per km^2/year
+            'soil': -0.001,		# inches per km^2/year
+            'labour': -200,		# hours per km^2/year
+            'certification': 0,
+            },
+        'color': 'purple',
         },
     }
 
@@ -43,27 +127,31 @@ class Normal:
 
 aggregate_measures = {
     'money': {
-        'duramSeed': Normal(50,10),
-        'duramSeedOrganic': Normal(55,10),
+        #'duramSeed': Normal(50,10),
+        'peachesRedhaven': Normal(55,10),
+        #'duramSeedOrganic': Normal(55,10),
         'labour': Normal(5,1),
         'certification': Normal(1,0),
-        'duram': Normal(300,10),
-        'duramOrganic': Normal(350,10),
         },
     'environment': {
-        'carbon': Normal(1,0),
-        'dolphin': Normal(10,100),
+        'carbon': Normal(10,0),
+        'nitrogen': Normal(10,10),
+        'soil':Normal(10,10),
+        'biodiversity':Normal(10,100)
         },
     }
 
 
 
 class Activity:
-    def __init__(self, name, equipment, products, aggregate_measures):
+    def __init__(self, name, equipment, products, aggregate_measures, times,
+                    color):
         self.name = name
         self.equipment = equipment
         self.products = products
         self.aggregate_measures = aggregate_measures
+        self.times = times
+        self.color = color
 
     def get_product(self, key, farm):
         if key in self.products.keys():

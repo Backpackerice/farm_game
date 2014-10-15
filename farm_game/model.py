@@ -45,10 +45,9 @@ class Model:
         height = self.farm_height
         for j in range(height):
             for i in range(width):
-                a = self.model.farms[j*width + i].last_activity.name
-                color = 'blue'
-                if 'Green' in a: color = 'green'
-                info = 'activity: %s' % a
+                a = self.model.farms[j*width + i].last_activity
+                color = a.color
+                info = 'activity: %s' % a.name
                 item = dict(type='farm', x=i, y=j, color=color, info=info)
                 grid.append(item)
         return grid
