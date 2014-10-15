@@ -40,7 +40,7 @@ class Eutopia:
 if __name__=='__main__':
 
     interventions = []
-    eutopia = Eutopia()
+    eutopia = Eutopia(farm_count=100)
 
     '''
     interventions.append(intervention.PriceIntervention(5, 'duramSeed', 10))

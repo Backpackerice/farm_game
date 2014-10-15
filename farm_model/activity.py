@@ -19,7 +19,7 @@ activities = {
             'shelfLifeWeeks': 1, 		# weeks from picking
         	},
         'products': {
-            'peachesRedhaven': 35, 		# total tons per km^2/year
+            'peachesRedhaven': '35 if farm.counter.red_haven > 7 else 0', 		# total tons per km^2/year
             'nitrogen': -10,		# kg per km^2/year
             'carbon': 20,		# tons per km^2/year
             'soil': -0.001,		# inches per km^2/year
@@ -27,6 +27,7 @@ activities = {
             'certification': 0,
             },
         'color': 'red',
+        'counters': ['red_haven'],
         },
     'peachesRedhavenOrganic': {
         'equipment': ['tractor'],
@@ -39,14 +40,16 @@ activities = {
             'shelfLifeWeeks': 1, 		# weeks from picking
         	},
         'products': {
-            'peachesOrganicRedhaven': 30, 		# total tons per km^2?
+            'peachesOrganicRedhaven': '30 if farm.counter.red_haven > 7 and farm.counter.organic > 3 else 0', 		# total tons per km^2?
+            'peachesRedhaven': '30 if farm.counter.red_haven > 7 and farm.counter.organic <= 3 else 0', 		# total tons per km^2?
             'nitrogen': 0,
             'carbon': 10,		# tons per km^2?
             'soil': 0.001,		# inches per km^2?
             'labour': -220,		# hours per km^2/year
-            'certification': 1000, # $/farm
+            'certification': -10, # $/(km^2 year)
             },
         'color': 'pink',
+        'counters': ['red_haven', 'organic'],
         },
 
 	 # Canning, late August, freestone.
@@ -69,6 +72,7 @@ activities = {
             'certification': 0,
             },
         'color': 'yellow',
+        'counters': ['baby_gold'],
         },
     'peachesBabyGoldOrganic': {
         'equipment': ['tractor'],
@@ -86,9 +90,10 @@ activities = {
             'carbon': 10,		# tons per km^2?
             'soil': 0.001,		# inches per km^2?
             'labour': -220,		# hours per km^2/year
-            'certification': 1000, # $/farm
+            'certification': -10, # $/(km^2 year)
             },
         'color': 'gold',
+        'counters': ['baby_gold', 'organic'],
         },
 	 # Coronation seedless grapes, mid August through to end of September.
     'grapesCoronationConventional': {
@@ -110,6 +115,7 @@ activities = {
             'certification': 0,
             },
         'color': 'purple',
+        'counters': ['grapes'],
         },
     }
 
@@ -129,6 +135,7 @@ aggregate_measures = {
     'money': {
         #'duramSeed': Normal(50,10),
         'peachesRedhaven': Normal(55,10),
+        'peachesOrganicRedhaven': Normal(65,10),
         #'duramSeedOrganic': Normal(55,10),
         'labour': Normal(5,1),
         'certification': Normal(1,0),
@@ -145,23 +152,27 @@ aggregate_measures = {
 
 class Activity:
     def __init__(self, name, equipment, products, aggregate_measures, times,
-                    color):
+                    color, counters):
         self.name = name
         self.equipment = equipment
         self.products = products
         self.aggregate_measures = aggregate_measures
         self.times = times
         self.color = color
+        self.counters = counters
 
     def get_product(self, key, farm):
         if key in self.products.keys():
-            return self.products[key]*farm.area
+            value = self.products[key]
+            if isinstance(value, str):
+                value = eval(value, dict(farm=farm))
+            return value * farm.area
         elif key in self.aggregate_measures.keys():
             total = 0
             for item, distribution in self.aggregate_measures[key].items():
                 if item in self.products.keys():
                     weight = distribution.value()
-                    total += weight*self.products[item]*farm.area
+                    total += weight*self.get_product(item, farm)
             return total
 
         raise Exception('Could not find product "%s"'%key)
