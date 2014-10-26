@@ -21,7 +21,7 @@ class Model:
         self.steps += 1
         for interv in self.interventions:
             if self.steps > interv.time:
-                interv.apply(self, self.steps)
+                interv.apply(self.model, self.steps)
 
         self.model.step()
 
@@ -96,6 +96,22 @@ def run(seed, *actions):
     for i, action in enumerate(actions):
         if i > step:
             # add intervention
+            interv = None
+
+            if action == 'init':
+                pass
+            elif action == 'none':
+                pass
+            elif action.startswith('price:'):
+                product, value = action[6:].split('*')
+                value = float(value)
+                interv = farm_model.intervention.PriceIntervention(i, product, value)
+            else:
+                print 'WARNING: Unknown intervention', action
+
+            if interv is not None:
+                model.interventions.append(interv)
+
 
             model.step()
 
@@ -107,5 +123,15 @@ def run(seed, *actions):
 
 
 if __name__ == '__main__':
-    print run(1, 'init')
+
+    data = run(1, 'init', 'none', 'none', 'price:peachesOrganicBabyGold*20',
+                    'none', 'none', 'none')
+
+    import pylab
+    for k, v in data.items():
+        if k.startswith('act_'):
+            pylab.plot(v, label=k[4:])
+    pylab.legend(loc='best')
+    pylab.show()
+
 

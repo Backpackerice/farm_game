@@ -36,38 +36,12 @@
         <input type='button' value='undo' onclick='doaction("undo", this.value)';/>
         Game #: <input id='seed' type='text' value='%(seed)s' onchange='update_seed();'/>
         <br/>
-        <table class='interventions'>
-        <tr><th>Mobility</th><th>Childcare</th><th>Highschool</th>
-            <th>Skills Transfer</th><th>Supportive Hiring</th>
-            <th>Job Requirements</th><th>Relocation</th></tr>
-        <tr>    
-            <td><input type='button' value='Low' onclick='doaction("mobility-low", this.value, "Mobility");'/></td>
-            <td><input type='button' value='Low' onclick='doaction("childcare-low", this.value, "Childcare");'/></td>
-            <td><input type='button' value='Low' onclick='doaction("highschool-low", this.value, "Highschool");'/></td>
-            <td><input type='button' value='Low' onclick='doaction("sectormobility-low", this.value, "Skills Transfer");'/></td>
-            <td><input type='button' value='Low' onclick='doaction("povertybias-low", this.value, "Supportive Hiring");'/></td>
-            <td><input type='button' value='Low' onclick='doaction("hsnotrequired-low", this.value, "Job Requirements");'/></td>
-            <td><input type='button' value='Low' onclick='doaction("move-1", this.value, "Relocation");'/></td>
-        </tr>    
-        <tr>    
-            <td><input type='button' value='Med' onclick='doaction("mobility-med", this.value, "Mobility");'/></td>
-            <td><input type='button' value='Med' onclick='doaction("childcare-med", this.value, "Childcare");'/></td>
-            <td><input type='button' value='Med' onclick='doaction("highschool-med", this.value, "Highschool");'/></td>
-            <td><input type='button' value='Med' onclick='doaction("sectormobility-med", this.value, "Skills Transfer");'/></td>
-            <td><input type='button' value='Med' onclick='doaction("povertybias-med", this.value, "Supportive Hiring");'/></td>
-            <td><input type='button' value='Med' onclick='doaction("hsnotrequired-med", this.value, "Job Requirements");'/></td>
-            <td><input type='button' value='Med' onclick='doaction("move-2", this.value, "Relocation");'/></td>
-        </tr>    
-        <tr>    
-            <td><input type='button' value='High' onclick='doaction("mobility-high", this.value, "Mobility");'/></td>
-            <td><input type='button' value='High' onclick='doaction("childcare-high", this.value, "Childcare");'/></td>
-            <td><input type='button' value='High' onclick='doaction("highschool-high", this.value, "Highschool");'/></td>
-            <td><input type='button' value='High' onclick='doaction("sectormobility-high", this.value, "Skills Transfer");'/></td>
-            <td><input type='button' value='High' onclick='doaction("povertybias-high", this.value, "Supportive Hiring");'/></td>
-            <td><input type='button' value='High' onclick='doaction("hsnotrequired-high", this.value, "Job Requirements");'/></td>
-            <td><input type='button' value='High' onclick='doaction("move-3", this.value, "Relocation");'/></td>
-        </tr>    
-        </table>
+        
+        <input type='button' value='OrganicPeachPrice x0.5' onclick='doaction("price:peachesOrganicBabyGold*0.5", this.value);'/>
+
+        <input type='button' value='OrganicPeachPrice x2' onclick='doaction("price:peachesOrganicBabyGold*2", this.value);'/>
+
+        
         </div>
     </div>
     </div>
