@@ -15,8 +15,10 @@
     <script src="static/js/nvd3/models/scatter.js"></script>
     <script src="static/js/nvd3/models/line.js"></script>
     <script src="static/js/nvd3/models/lineChart.js"></script>
+    <script src="static/js/d3.slider/d3.slider.js"></script>
     <link href="static/css/nv.d3.css" rel="stylesheet" type="text/css">
     <link href="static/css/teststyle.css" rel="stylesheet" type="text/css">
+    <link href="static/css/d3.slider.css" rel="stylesheet" type="text/css">
     
 </head>
 
@@ -41,10 +43,17 @@
 
         <input type='button' value='OrganicPeachPrice x2' onclick='doaction("price:peachesOrganicBabyGold*2", this.value);'/>
 
+        </div>
+        
+    </div>
+    </div>
+
+        <div id='control_info'>
+            Farmers sell organic peaches at $<span id="slider1_value">50</span> per ton
+            <div id="slider1" style="margin:0.5em 1em 0.5em 1em"></div>
         
         </div>
-    </div>
-    </div>
+
     
       <div id='grid'>
         <svg></svg>
@@ -78,6 +87,18 @@
     </div>
       
 <script>
+
+function slide1(event, value) {
+    d3.select('#slider1_value').text(value.toFixed(2));
+}
+function slide1end(event, value) {
+    action = 'price:peachesOrganicBabyGold=' + value.toFixed(2);
+    text = action;
+    doaction(action, text, undefined, true);
+}
+
+
+d3.select('#slider1').call(d3.slider().min(0).axis(true).max(500).value(65).on("slide", slide1).on("slideend", slide1end));
 
 function update_name() {
     name = document.getElementById('username').value
@@ -188,11 +209,14 @@ nv.addGraph(function() {
     
     
 
-function doaction(action, text, type) {
+function doaction(action, text, type, replace) {
     console.log(action);
     
     var data = new FormData();
     data.append('action', action);
+    if (replace != undefined) {
+        data.append('replace', replace);
+    }
     if (type == undefined) {
         data.append('action_text', text);    
     } else {
@@ -250,8 +274,8 @@ doaction('init');
 function update_grid(grid_data) {
     var width = 300.0;
     var height = 300.0;
-    var cols = 14;
-    var rows = 14;
+    var cols = 7;
+    var rows = 7;
     
     svg = d3.select('#grid svg')
     svg.selectAll("*").remove()    

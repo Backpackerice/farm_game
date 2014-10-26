@@ -3,8 +3,8 @@ import numpy as np
 import farm_model
 
 class Model:
-    farm_width = 14
-    farm_height = 14
+    farm_width = 7
+    farm_height = 7
     farm_count = farm_width * farm_height
 
     def __init__(self, seed=None):
@@ -103,9 +103,14 @@ def run(seed, *actions):
             elif action == 'none':
                 pass
             elif action.startswith('price:'):
-                product, value = action[6:].split('*')
-                value = float(value)
-                interv = farm_model.intervention.PriceIntervention(i, product, value)
+                if '*' in action[6:]:
+                    product, value = action[6:].split('*')
+                    value = float(value)
+                    interv = farm_model.intervention.PriceScaleIntervention(i, product, value)
+                elif '=' in action[6:]:
+                    product, value = action[6:].split('=')
+                    value = float(value)
+                    interv = farm_model.intervention.PriceIntervention(i, product, value)
             else:
                 print 'WARNING: Unknown intervention', action
 

@@ -142,7 +142,8 @@ class Server(farm_game.swi.SimpleWebInterface):
 
 
 
-    def swi_play_json(self, uuid, action, action_text, seed=None):
+    def swi_play_json(self, uuid, action, action_text, seed=None,
+                      replace=None):
         maximum = 10
         substeps = 1
         name = self.get_name(uuid)
@@ -159,6 +160,11 @@ class Server(farm_game.swi.SimpleWebInterface):
         elif len(actions[uuid]) >= maximum:
             pass
         else:
+            if replace:
+                if len(actions[uuid]) > 1:
+                    del actions[uuid][-1]
+                    del action_texts[uuid][-1]
+
             actions[uuid].append(action)
             action_texts[uuid].append(action_text)
 

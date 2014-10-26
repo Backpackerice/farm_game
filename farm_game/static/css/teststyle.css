@@ -191,3 +191,9 @@ table.interventions th{
     padding-left: 10px;
     padding-right: 10px;
     }    
+    
+#control_info {
+    margin: 20px;
+    background: #eee;
+    height: 100px;
+    }

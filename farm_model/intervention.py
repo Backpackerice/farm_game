@@ -1,6 +1,6 @@
 import activity
 
-class PriceIntervention:
+class PriceScaleIntervention:
     def __init__(self, time, product, scale, phase_in_time=0):
         self.time = time
         self.product = product
@@ -24,6 +24,24 @@ class PriceIntervention:
 
         money[self.product] = self.original_value*scale
 
+class PriceIntervention:
+    def __init__(self, time, product, value):
+        self.time = time
+        self.product = product
+        self.value = value
+        self.original_value = None
+
+    def apply(self, eutopia, time):
+        assert time>=self.time
+
+        money = eutopia.activities.aggregates['money']
+
+        if self.original_value is None:
+            self.original_value = money[self.product]
+
+        scale = self.value / self.original_value.mean
+
+        money[self.product] = self.original_value * scale
 
 class NewActivityIntervention:
     def __init__(self, time, name, activity):
