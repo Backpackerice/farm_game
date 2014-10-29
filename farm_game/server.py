@@ -239,7 +239,19 @@ class Server(farm_game.swi.SimpleWebInterface):
         a = ['%d: %s' % (i+1,x) for i,x in enumerate(action_texts)]
         a = '<br/>'.join(a)
 
-        return json.dumps(dict(time=time, race=race, race_pie=race_pie, grid=grid, money=money, actions=a))
+        control_text = ''
+        control_code = ''
+        m = all_actions.find_action(actions[uuid][-1])
+        if m is not None:
+            action, p = m
+            control_text = action.make_control_html(p)
+            control_code = action.make_control_code(p)
+
+
+        return json.dumps(dict(time=time, race=race, race_pie=race_pie,
+                               grid=grid, money=money, actions=a,
+                               control_text=control_text,
+                               control_code=control_code))
 
 
     def create_login_form(self):

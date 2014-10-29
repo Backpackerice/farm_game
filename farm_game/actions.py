@@ -45,6 +45,51 @@ class Action(object):
             html.append(text)
         return ''.join(html)
 
+    def make_control_html(self, params):
+        desc = self.desc
+        sliders = []
+        for p in self.parameters:
+            span = '<span id="slider_%s_value">%s</span>' % (p.name,
+                                                p.get_text(params[p.name]))
+            desc = desc.replace('{%s}' % p.name, span)
+            slider = '<div id="slider_%s"></div>' % p.name
+            sliders.append(slider)
+        return '%s %s' % (desc, ''.join(sliders))
+
+    def make_control_code(self, params):
+        replace = ''
+        for p in self.parameters:
+            replace += "action=action.replace('{%s}', d3.select('#slider_%s_value').text()); " % (p.name, p.name)
+        code = []
+        for p in self.parameters:
+            code.append('''
+function slide_%(name)s_func(event, value) {
+        d3.select('#slider_%(name)s_value').text(value.toFixed(%(decimals)d));
+}
+
+function slide_%(name)s_funcend(event, value) {
+    action = "%(code)s";
+    %(replace)s
+    doaction(action, true);
+}
+
+d3.select('#slider_%(name)s').call(d3.slider()
+                             .min(%(min)g)
+                             .axis(true)
+                             .max(%(max)g)
+                             .value(%(value)g)
+                             .on("slide", slide_%(name)s_func)
+                             .on("slideend", slide_%(name)s_funcend));
+''' % dict(name=p.name, min=p.min, max=p.max, value=params[p.name],
+           decimals=p.decimals, code=self.code, replace=replace))
+
+        return ''.join(code)
+
+
+
+
+
+
 
 class Parameter(object):
     def __init__(self, name, min, max, decimals):
