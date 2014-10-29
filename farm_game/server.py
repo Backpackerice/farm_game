@@ -2,11 +2,14 @@ import os.path
 import json
 import random
 import uuid as uuid_package
+import time
 
 import pkgutil
 import farm_game
 
 import model
+import logging
+log = logging.Logging()
 
 
 from collections import OrderedDict
@@ -17,6 +20,8 @@ seeds = {}
 names = {}
 
 class Server(farm_game.swi.SimpleWebInterface):
+    maximum_steps = 10
+    substeps_per_step = 1
 
     def clear(self):
         actions.clear()
@@ -60,9 +65,6 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         if command == 'clear':
             self.clear()
-
-        maximum = 10
-        substeps = 10
 
         uuids = [k for k in actions.keys() if len(actions[k])>1]
 
@@ -118,7 +120,7 @@ class Server(farm_game.swi.SimpleWebInterface):
         return name
 
 
-    def swi_play(self, uuid=None):
+    def swi_play(self, uuid=None, seed=None, loadactions='init'):
         if uuid is None:
             uuid = str(uuid_package.uuid4())
         if not actions.has_key(uuid):
@@ -129,7 +131,17 @@ class Server(farm_game.swi.SimpleWebInterface):
             return self.create_login_form()
         html = pkgutil.get_data('farm_game', 'templates/play.html')
         name = self.get_name(uuid)
-        return html % dict(uuid=uuid, name=name, seed=seeds[uuid])
+
+        if seed is not None:
+            seeds[uuid] = int(seed)
+
+        loadactions = loadactions.split(',')
+        actions[uuid] = loadactions
+        action_texts[uuid] = list(loadactions)
+        json_data = self.generate_json_data(uuid)
+
+        return html % dict(uuid=uuid, name=name, seed=seeds[uuid],
+                           json_data=json_data)
 
     def swi_set_name(self, uuid, name):
         names[uuid] = name
@@ -137,6 +149,8 @@ class Server(farm_game.swi.SimpleWebInterface):
     def run_game(self, u):
         seed = seeds[u]
         acts = actions[u]
+        print 'running', u, seed, acts
+
 
         return model.run(seed, *acts)
 
@@ -144,8 +158,6 @@ class Server(farm_game.swi.SimpleWebInterface):
 
     def swi_play_json(self, uuid, action, action_text, seed=None,
                       replace=None):
-        maximum = 10
-        substeps = 1
         name = self.get_name(uuid)
         if action == 'init':
             actions[uuid] = []
@@ -157,7 +169,9 @@ class Server(farm_game.swi.SimpleWebInterface):
             if len(actions[uuid]) > 1:
                 del actions[uuid][-1]
                 del action_texts[uuid][-1]
-        elif len(actions[uuid]) >= maximum:
+        elif action == 'reload':
+            pass
+        elif len(actions[uuid]) >= Server.maximum_steps:
             pass
         else:
             if replace:
@@ -168,6 +182,11 @@ class Server(farm_game.swi.SimpleWebInterface):
             actions[uuid].append(action)
             action_texts[uuid].append(action_text)
 
+        log.record(uuid, names[uuid], seeds[uuid], actions[uuid])
+
+        return self.generate_json_data(uuid)
+
+    def generate_json_data(self, uuid):
         data = self.run_game(uuid)
 
         keys = [k for k in data.keys() if k.startswith('act_')]
@@ -179,8 +198,8 @@ class Server(farm_game.swi.SimpleWebInterface):
             key = keys[i]
             values = []
             for j in range(len(data[key])):
-                values.append(dict(x=float(j)/substeps, y=data[key][j]))
-            values.append(dict(x=maximum, y=None))
+                values.append(dict(x=float(j)/Server.substeps_per_step, y=data[key][j]))
+            values.append(dict(x=Server.maximum_steps, y=None))
             time.append(dict(values=values, key=key[4:], color=color, area=False))
 
 
@@ -193,7 +212,7 @@ class Server(farm_game.swi.SimpleWebInterface):
                 color = ['blue', 'red', 'black', 'magenta', 'cyan', 'green'][len(race) % 6]
                 values = []
                 for j in range(len(data[k])):
-                    values.append(dict(x=float(j)/substeps, y=data[k][j]))
+                    values.append(dict(x=float(j)/Server.substeps_per_step, y=data[k][j]))
                 values.append(dict(x=maximum, y=None))
                 race.append(dict(values=values, key=key, color=color, area=False))
 
@@ -233,4 +252,31 @@ class Server(farm_game.swi.SimpleWebInterface):
         <input type=hidden name=swi_id value="" />
         <input type=password name=swi_pwd>
         </form>""" % message
+
+    def swi_history(self, uuid=None):
+
+        users = []
+        for u, name in log.users.items():
+            s = ' selected' if uuid == u else ''
+            users.append('<option value="%s"%s>%s</option>' % (u, s, name))
+        html_users = ''.join(users)
+
+
+        if uuid is not None:
+            items = []
+            for event in log.get_events(uuid):
+                t, user, username, seed, actions = event
+                str_time = time.strftime('%Y/%m/%d %H:%M:%S', t)
+                url = 'play?seed=%s&loadactions=%s' % (seed, ','.join(actions))
+                text = '<li><a href="%s">%s %s</a></li>' % (url, str_time,
+                                                            ', '.join(actions))
+                items.append(text)
+            html_items = 'History: <ul>%s</ul>' % ''.join(items)
+        else:
+            html_items = ''
+
+        html = pkgutil.get_data('farm_game', 'templates/history.html')
+
+        return html % dict(items=html_items, users=html_users)
+
 

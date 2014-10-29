@@ -231,7 +231,7 @@ function doaction(action, text, type, replace) {
 }
 
 function update() {
-	data = JSON.parse(this.responseText);
+    data = JSON.parse(this.responseText);
     
     steps = data.time[0].values.length;
     score = 100;
@@ -269,7 +269,7 @@ function update() {
     update_grid(data.grid);    
 }
 
-doaction('init');
+doaction('reload');
 
 function update_grid(grid_data) {
     var width = 300.0;
