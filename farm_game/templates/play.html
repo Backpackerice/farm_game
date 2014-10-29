@@ -34,15 +34,10 @@
         <div id='cen'>
         Name: <input id='username' type='text' value='%(name)s' onchange='update_name();'/>
         <input type='button' value='restart' onclick='doaction("init");'/>
-        <input type='button' value='no new interventions' onclick='doaction("nothing");'/>
         <input type='button' value='undo' onclick='doaction("undo")';/>
         Game #: <input id='seed' type='text' value='%(seed)s' onchange='update_seed();'/>
         <br/>
-        
-        <input type='button' value='OrganicPeachPrice x0.5' onclick='doaction("price:peachesOrganicBabyGold*0.5");'/>
-
-        <input type='button' value='OrganicPeachPrice x2' onclick='doaction("price:peachesOrganicBabyGold*2");'/>
-
+        %(action_buttons)s
         </div>
         
     </div>

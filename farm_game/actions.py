@@ -19,6 +19,12 @@ class Action(object):
             desc = desc.replace('{%s}' % p.name, p.get_text(params[p.name]))
         return desc
 
+    def get_code(self, params):
+        code = self.code
+        for p in self.parameters:
+            code = code.replace('{%s}' % p.name, p.get_text(params[p.name]))
+        return code
+
     def parse_code(self, code):
         pattern = self.code
         pattern = pattern.replace('*', r'\*')
@@ -28,6 +34,16 @@ class Action(object):
         m = re.match(pattern, code)
         if m is not None:
             return {k: float(v) for k,v in m.groupdict().items()}
+
+    def make_buttons(self):
+        html = []
+        for b in self.buttons:
+            short = self.get_short_desc(b)
+            code = self.get_code(b)
+            text = '''<input type='button' value='%s' onclick='doaction("%s");'/>'''
+            text = text % (short, code)
+            html.append(text)
+        return ''.join(html)
 
 
 class Parameter(object):
@@ -51,6 +67,12 @@ class Actions(object):
             if result is not None:
                 return a, result
         return None
+
+    def make_buttons(self):
+        html = []
+        for a in self.actions:
+            html.append(a.make_buttons())
+        return ''.join(html)
 
     def make_actions(self):
         a = Action(self)

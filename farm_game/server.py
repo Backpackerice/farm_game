@@ -136,10 +136,9 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         loadactions = loadactions.split(',')
         actions[uuid] = loadactions
-        json_data = self.generate_json_data(uuid)
 
         return html % dict(uuid=uuid, name=name, seed=seeds[uuid],
-                           json_data=json_data)
+                           action_buttons=all_actions.make_buttons())
 
     def swi_set_name(self, uuid, name):
         names[uuid] = name
