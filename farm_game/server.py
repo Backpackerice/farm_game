@@ -10,12 +10,13 @@ import farm_game
 import model
 import logging
 log = logging.Logging()
+import actions
+all_actions = actions.Actions()
 
 
 from collections import OrderedDict
 
 actions = OrderedDict()
-action_texts = OrderedDict()
 seeds = {}
 names = {}
 
@@ -25,7 +26,6 @@ class Server(farm_game.swi.SimpleWebInterface):
 
     def clear(self):
         actions.clear()
-        action_texts.clear()
         seeds.clear()
         names.clear()
         model.clear_cache()
@@ -125,7 +125,6 @@ class Server(farm_game.swi.SimpleWebInterface):
             uuid = str(uuid_package.uuid4())
         if not actions.has_key(uuid):
             actions[uuid] = []
-            action_texts[uuid] = []
             seeds[uuid] = uuid_package.UUID(uuid).int & 0x7fffffff
         if self.user is None:
             return self.create_login_form()
@@ -137,7 +136,6 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         loadactions = loadactions.split(',')
         actions[uuid] = loadactions
-        action_texts[uuid] = list(loadactions)
         json_data = self.generate_json_data(uuid)
 
         return html % dict(uuid=uuid, name=name, seed=seeds[uuid],
@@ -156,19 +154,16 @@ class Server(farm_game.swi.SimpleWebInterface):
 
 
 
-    def swi_play_json(self, uuid, action, action_text, seed=None,
-                      replace=None):
+    def swi_play_json(self, uuid, action, seed=None, replace=None):
         name = self.get_name(uuid)
         if action == 'init':
             actions[uuid] = []
-            action_texts[uuid] = []
         if seed is not None:
             seeds[uuid] = int(seed)
 
         if action == 'undo':
             if len(actions[uuid]) > 1:
                 del actions[uuid][-1]
-                del action_texts[uuid][-1]
         elif action == 'reload':
             pass
         elif len(actions[uuid]) >= Server.maximum_steps:
@@ -177,10 +172,8 @@ class Server(farm_game.swi.SimpleWebInterface):
             if replace:
                 if len(actions[uuid]) > 1:
                     del actions[uuid][-1]
-                    del action_texts[uuid][-1]
 
             actions[uuid].append(action)
-            action_texts[uuid].append(action_text)
 
         log.record(uuid, names[uuid], seeds[uuid], actions[uuid])
 
@@ -237,8 +230,14 @@ class Server(farm_game.swi.SimpleWebInterface):
         money.append(dict(key='intervention', values=[{'x':0, 'y':0}, {'x':1, 'y':interv_private}, {'x':2, 'y':interv_public}]))
         '''
 
-        a = action_texts[uuid][1:]
-        a = ['%d: %s' % (i+1,x) for i,x in enumerate(a)]
+        action_texts = []
+        for a in actions[uuid][1:]:
+            m = all_actions.find_action(a)
+            if m is None:
+                action_texts.append(a)
+            else:
+                action_texts.append(m[0].get_short_desc(m[1]))
+        a = ['%d: %s' % (i+1,x) for i,x in enumerate(action_texts)]
         a = '<br/>'.join(a)
 
         return json.dumps(dict(time=time, race=race, race_pie=race_pie, grid=grid, money=money, actions=a))

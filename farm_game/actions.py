@@ -13,6 +13,12 @@ class Action(object):
     def add_button(self, **kwargs):
         self.buttons.append(dict(**kwargs))
 
+    def get_short_desc(self, params):
+        desc = self.short_desc
+        for p in self.parameters:
+            desc = desc.replace('{%s}' % p.name, p.get_text(params[p.name]))
+        return desc
+
     def parse_code(self, code):
         pattern = self.code
         pattern = pattern.replace('*', r'\*')
@@ -30,6 +36,8 @@ class Parameter(object):
         self.min = min
         self.max = max
         self.decimals = decimals
+    def get_text(self, value):
+        return '%g' % round(value, self.decimals)
 
 
 class Actions(object):
@@ -45,6 +53,12 @@ class Actions(object):
         return None
 
     def make_actions(self):
+        a = Action(self)
+        a.desc = '''Make no policy changes.'''
+        a.code = 'nothing'
+        a.short_desc = 'Do nothing'
+        a.add_button()
+
         a = Action(self)
         a.add_parameter('price', min=0.01, max=100.0, decimals=2)
         a.desc = '''Farmers sell organic peaches at ${price} per ton.'''
@@ -63,10 +77,13 @@ class Actions(object):
         a.add_button(scale=2)
 
 
-
 if __name__ == '__main__':
     actions = Actions()
-    print actions.find_action('price:peachesOrganicBabyGold=20.5')
-    print actions.find_action('price:peachesOrganicBabyGold*2')
+    a, p = actions.find_action('price:peachesOrganicBabyGold=20.5')
+    print a.get_short_desc(p)
+    a, p = actions.find_action('price:peachesOrganicBabyGold*2')
+    print a.get_short_desc(p)
+    a, p = actions.find_action('nothing')
+    print a.get_short_desc(p)
 
 

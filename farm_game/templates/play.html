@@ -33,15 +33,15 @@
         <!--Interventions-->
         <div id='cen'>
         Name: <input id='username' type='text' value='%(name)s' onchange='update_name();'/>
-        <input type='button' value='restart' onclick='doaction("init", this.value);'/>
-        <input type='button' value='no new interventions' onclick='doaction("nothing", this.value);'/>
-        <input type='button' value='undo' onclick='doaction("undo", this.value)';/>
+        <input type='button' value='restart' onclick='doaction("init");'/>
+        <input type='button' value='no new interventions' onclick='doaction("nothing");'/>
+        <input type='button' value='undo' onclick='doaction("undo")';/>
         Game #: <input id='seed' type='text' value='%(seed)s' onchange='update_seed();'/>
         <br/>
         
-        <input type='button' value='OrganicPeachPrice x0.5' onclick='doaction("price:peachesOrganicBabyGold*0.5", this.value);'/>
+        <input type='button' value='OrganicPeachPrice x0.5' onclick='doaction("price:peachesOrganicBabyGold*0.5");'/>
 
-        <input type='button' value='OrganicPeachPrice x2' onclick='doaction("price:peachesOrganicBabyGold*2", this.value);'/>
+        <input type='button' value='OrganicPeachPrice x2' onclick='doaction("price:peachesOrganicBabyGold*2");'/>
 
         </div>
         
@@ -94,7 +94,7 @@ function slide1(event, value) {
 function slide1end(event, value) {
     action = 'price:peachesOrganicBabyGold=' + value.toFixed(2);
     text = action;
-    doaction(action, text, undefined, true);
+    doaction(action, text, true);
 }
 
 
@@ -209,18 +209,13 @@ nv.addGraph(function() {
     
     
 
-function doaction(action, text, type, replace) {
+function doaction(action, text, replace) {
     console.log(action);
     
     var data = new FormData();
     data.append('action', action);
     if (replace != undefined) {
         data.append('replace', replace);
-    }
-    if (type == undefined) {
-        data.append('action_text', text);    
-    } else {
-        data.append('action_text', type + '(' + text+ ')');
     }
     data.append('uuid', "%(uuid)s");
     
