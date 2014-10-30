@@ -117,7 +117,7 @@ class Actions(object):
         html = []
         for a in self.actions:
             html.append(a.make_buttons())
-        return ''.join(html)
+        return ' '.join(html)
 
     def make_actions(self):
         a = Action(self)
@@ -136,12 +136,24 @@ class Actions(object):
         a.add_button(price=100)
 
         a = Action(self)
+        a.add_parameter('price', min=0.01, max=100.0, decimals=2)
+        a.add_parameter('tax', min=0.00, max=100.0, decimals=2)
+        a.desc = '''Farmers sell non-organic peaches at ${price} per ton taxed at {tax}%.'''
+        a.code = 'taxprice:peachesBabyGold={price},{tax}'
+        a.short_desc = 'Non-organicBG={price},{tax}'
+        a.add_button(price=10, tax=0)
+        a.add_button(price=40, tax=0)
+        a.add_button(price=90, tax=0)
+
+        a = Action(self)
         a.add_parameter('scale', min=0.1, max=10.0, decimals=2)
         a.desc = '''Farmers sell organic peaches at {scale} times old price.'''
         a.code = 'price:peachesOrganicBabyGold*{scale}'
         a.short_desc = 'OrganicBG*{scale}'
         a.add_button(scale=0.5)
         a.add_button(scale=2)
+
+
 
 
 if __name__ == '__main__':
