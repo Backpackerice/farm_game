@@ -4,6 +4,7 @@
     font-size: 1.1em;
     border: 1px solid #aaaaaa;
     z-index: 2;
+    margin:0.5em 1em 0.5em 1em;
 }
 
 .d3-slider-horizontal {
