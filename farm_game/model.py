@@ -30,6 +30,7 @@ class Model:
     def init_data(self):
         for name in self.model.activities.keys():
             self.data['act_' + name] = []
+        self.data['total_bankbalance'] = []
 
     def update_data(self):
         if self.steps >= 0:
@@ -39,6 +40,10 @@ class Model:
             for name in self.model.activities.keys():
                 self.data['act_' + name].append(acts.get(name, 0) * 100.0 /
                                                 float(self.farm_count))
+            self.data['total_bankbalance'].append(self.get_total_balance())
+
+    def get_total_balance(self):
+        return sum([f.bank_balance for f in self.model.families])
 
     def get_grid(self):
         grid = []
@@ -129,7 +134,7 @@ def run(seed, *actions):
 
 if __name__ == '__main__':
 
-    data = run(1, 'init', 'none', 'none', 'price:peachesOrganicBabyGold*20',
+    data = run(1, 'init', 'nothing', 'none', 'price:peachesOrganicBabyGold*20',
                     'none', 'none', 'none')
 
     import pylab
