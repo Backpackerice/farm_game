@@ -25,7 +25,7 @@
 <body>
 
     <div id='top_bar'>
-    <div id='title'>
+    <div id='title' style='display:none'>
       Interventions
     </div>
 
@@ -64,11 +64,13 @@
         <svg></svg>
       </div>
 
+      -->
+      
       <div id='chart_race'>
         <svg></svg>
       </div>
       
-      -->
+      
       
       <div class='score' id='score'>
             
@@ -150,7 +152,6 @@ nv.addGraph(function() {
       .axisLabel('Time')
       .tickFormat(d3.format(',.2f'));                    
     chart_race.yAxis    
-      .axisLabel('Employment Percentage')
       .tickFormat(d3.format(',.2f'));      
   
     return chart_race;
@@ -213,13 +214,14 @@ function update() {
     score = 100;
     
         
-    if (steps==102) {
-            document.getElementById("score").className = 'score final';
-            document.getElementById("score").innerHTML="FINAL SCORE: <strong>"+score.toFixed(1)+"%%</strong>";
-    } else {
-            document.getElementById("score").className = 'score';
-            document.getElementById("score").innerHTML="<p>"+data.actions+"</p>SCORE: <strong>"+score.toFixed(1)+"%%</strong>";
-    }
+    document.getElementById("score").innerHTML="<p>"+data.actions+"</p>";   
+    //if (steps==102) {
+    //        document.getElementById("score").className = 'score final';
+    //        document.getElementById("score").innerHTML="FINAL SCORE: <strong>"+score.toFixed(1)+"%%</strong>";
+   // } else {
+    //        document.getElementById("score").className = 'score';
+     //       document.getElementById("score").innerHTML="<p>"+data.actions+"</p>SCORE: <strong>"+score.toFixed(1)+"%%</strong>";
+    //}
     
     d3.select('#chart_time svg')
         .datum(data.time)
@@ -236,7 +238,6 @@ function update() {
         .call(chart_race_pie);
     nv.utils.windowResize(chart_race_pie.update);
 
-    console.log(data.money);
     d3.select('#chart_money svg')
         .datum(data.money)
         .call(chart_money);
@@ -249,7 +250,6 @@ function update() {
 
 function update_controls(text, code) {
     document.getElementById('control_info').innerHTML = text;
-    console.log(code);
     eval(code);
 }
 

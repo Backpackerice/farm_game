@@ -6,6 +6,20 @@ class Model:
     farm_width = 7
     farm_height = 7
     farm_count = farm_width * farm_height
+    products = [
+                'peachesRedhaven',
+                'peachesBabyGold',
+                'peachesOrganicRedhaven',
+                'peachesOrganicBabyGold',
+                'grapes',
+                'labour',
+                'carbon',
+                'nitrogen',
+                'soil',
+                'biodiversity',
+               ]
+
+
 
     def __init__(self, seed=None):
         self.rng = np.random.RandomState(seed=seed)
@@ -31,6 +45,8 @@ class Model:
         for name in self.model.activities.keys():
             self.data['act_' + name] = []
         self.data['total_bankbalance'] = []
+        for p in self.products:
+            self.data['prod_' + p] = []
 
     def update_data(self):
         if self.steps >= 0:
@@ -41,9 +57,14 @@ class Model:
                 self.data['act_' + name].append(acts.get(name, 0) * 100.0 /
                                                 float(self.farm_count))
             self.data['total_bankbalance'].append(self.get_total_balance())
+            for p in self.products:
+                self.data['prod_' + p].append(self.get_product(p))
 
     def get_total_balance(self):
         return sum([f.bank_balance for f in self.model.families])
+    def get_product(self, product):
+        return sum([f.last_activity.get_product(product, f)
+                    for f in self.model.farms])
 
     def get_grid(self):
         grid = []
@@ -136,6 +157,8 @@ if __name__ == '__main__':
 
     data = run(1, 'init', 'nothing', 'none', 'price:peachesOrganicBabyGold*20',
                     'none', 'none', 'none')
+
+    print data
 
     import pylab
     for k, v in data.items():

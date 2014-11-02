@@ -20,6 +20,26 @@ actions = OrderedDict()
 seeds = {}
 names = {}
 
+colormap = {
+    'act_peachesRedhavenConventional': 'red',
+    'act_peachesRedhavenOrganic': 'pink',
+    'act_peachesBabyGoldConventional': 'yellow',
+    'act_peachesBabyGoldOrganic': 'gold',
+    'act_grapesCoronationConventional': 'purple',
+    'prod_grapes': 'purple',
+    'prod_peachesOrganicBabyGold': 'gold',
+    'prod_peachesBabyGold': 'yellow',
+    'prod_peachesOrganicRedhaven': 'pink',
+    'prod_peachesRedhaven': 'red',
+    'prod_nitrogen': 'blue',
+    'prod_carbon': 'black',
+    'prod_soil': 'brown',
+    'prod_labour': '#888',
+    'prod_biodiversity': 'green',
+
+    }
+
+
 class Server(farm_game.swi.SimpleWebInterface):
     maximum_steps = 10
     substeps_per_step = 1
@@ -185,9 +205,9 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         time = []
         for i in range(len(keys)):
-            color = ['blue', 'green', 'red', 'magenta', 'cyan', 'black'][i % 6]
-
             key = keys[i]
+            color = colormap[key]
+
             values = []
             for j in range(len(data[key])):
                 values.append(dict(x=float(j)/Server.substeps_per_step, y=data[key][j]))
@@ -197,20 +217,20 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         race = []
         race_pie = []
-        '''
+
         for k in sorted(data.keys()):
-            if k.startswith('employment_'):
-                key = k[11:]
-                color = ['blue', 'red', 'black', 'magenta', 'cyan', 'green'][len(race) % 6]
+            if k.startswith('prod_'):
+                key = k[5:]
+                color = colormap[k]
                 values = []
                 for j in range(len(data[k])):
                     values.append(dict(x=float(j)/Server.substeps_per_step, y=data[k][j]))
-                values.append(dict(x=maximum, y=None))
+                values.append(dict(x=Server.maximum_steps, y=None))
                 race.append(dict(values=values, key=key, color=color, area=False))
 
-                p = data['proportion_%s' % key]
-                race_pie.append(dict(label=key, value=p[-1], color=color))
-        '''
+                #p = data['proportion_%s' % key]
+                #race_pie.append(dict(label=key, value=p[-1], color=color))
+
 
         grid = data['grid']
 

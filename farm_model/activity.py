@@ -133,12 +133,11 @@ class Normal:
 
 aggregate_measures = {
     'money': {
-        #'duramSeed': Normal(50,10),
         'peachesRedhaven': Normal(55,10),
         'peachesBabyGold': Normal(55,10),
         'peachesOrganicRedhaven': Normal(65,10),
         'peachesOrganicBabyGold': Normal(65,10),
-        #'duramSeedOrganic': Normal(55,10),
+        'grapes': Normal(15,10),
         'labour': Normal(5,1),
         'certification': Normal(1,0),
         },
@@ -177,7 +176,7 @@ class Activity:
                     total += weight*self.get_product(item, farm)
             return total
 
-        raise Exception('Could not find product "%s"'%key)
+        return 0
 
 class Activities:
     def __init__(self):
