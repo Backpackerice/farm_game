@@ -90,41 +90,24 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         data = {k: self.run_game(k) for k in uuids}
 
-        #time = []
-        #for i, uuid in enumerate(uuids):
-        #    color = ['blue', 'red', 'green', 'magenta', 'cyan', 'black'][i % 6]
-        #    key = names[uuid]
-        #    values = []
-        #    for j in range(len(data[uuid]['employment'])):
-        #        values.append(dict(x=float(j)/substeps, y=data[uuid]['employment'][j]))
-        #    values.append(dict(x=maximum, y=None))
-        #    time.append(dict(values=values, key=key, color=color, area=False))
-
         bar = []
         for i, uuid in enumerate(uuids):
             color = ['blue', 'red', 'green', 'magenta', 'cyan', 'black'][i % 6]
-            key = names[uuid]
 
-            '''
+            runtime = len(data[uuid]['total_income'])
 
-            employment = data[uuid]['employment'][-1]
-            runtime = len(data[uuid]['production']) * 0.1
-            production = sum(data[uuid]['production']) / runtime
-            cost_hiring = sum(data[uuid]['cost_hiring']) / runtime
-            cost_salary = sum(data[uuid]['cost_salary']) / runtime
-            interv_private = sum(data[uuid]['interv_private']) / runtime
-            interv_public = sum(data[uuid]['interv_public']) / runtime
+            income = sum(data[uuid]['total_income']) / runtime
+            carbon = sum(data[uuid]['prod_carbon']) / runtime
+            biodiversity = sum(data[uuid]['prod_biodiversity']) / runtime
 
-            cost = cost_hiring+cost_salary+interv_private
+            values = [
+                dict(x=0, y=income),
+                dict(x=1, y=carbon),
+                dict(x=2, y=biodiversity),
+                ]
 
-            score = employment
-            if production < cost:
-                score = 0
-            values = [dict(x=0, y=score), dict(x=1, y=employment)
-                      ]
-            '''
-            values = [dict(x=0, y=100), dict(x=1, y=50)]
-            bar.append(dict(values=values, key=key, color=color))
+
+            bar.append(dict(values=values, key=names[uuid], color=color))
 
 
         return json.dumps(dict(bar=bar))
