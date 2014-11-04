@@ -138,6 +138,14 @@ div#chart_time {
     width: 50%;
     height: 300px;    
    }
+
+div.small_chart {
+    display: inline-block;
+    width: 20%;
+    height: 150px;   
+    margin: 0px;
+    padding: 0px;    
+   }
    
 div#chart_race {
     display: inline-block;
@@ -147,12 +155,6 @@ div#chart_race {
 
 div#chart_race_pie {
     display: none;
-    width: 30%;
-    height: 200px;    
-   }
-
-div#chart_money {
-    display: inline-block;
     width: 30%;
     height: 200px;    
    }

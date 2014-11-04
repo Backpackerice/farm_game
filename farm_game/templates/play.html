@@ -54,17 +54,11 @@
       <div class='chart full' id='chart_time'>
         <svg></svg>
       </div>
+      <br />
 
-      <!--
-      <div id='chart_race_pie'>
+      <div id='chart_money' class='small_chart'>
         <svg></svg>
       </div>
-
-      <div id='chart_money'>
-        <svg></svg>
-      </div>
-
-      -->
       
       <div id='chart_race'>
         <svg></svg>
@@ -134,61 +128,29 @@ nv.addGraph(function() {
     return chart_time;
     });
 
-var chart_race;
+var chart_money;
 nv.addGraph(function() {
-    chart_race = nv.models.lineChart()
+    chart_money = nv.models.lineChart()
                     .useInteractiveGuideline(true)
-                    .forceY([0, 100])
+                    .forceY([0, 10])
      .options({
     margin: {left: 80, bottom: 30},
     showXAxis: false,
     showYAxis: true,
+    showLegend: false,    
     transitionDuration: 250
   })
                     
-                    
-                    
-    chart_race.xAxis     //Chart x-axis settings
+    chart_money.xAxis     //Chart x-axis settings
       .axisLabel('Time')
       .tickFormat(d3.format(',.2f'));                    
-    chart_race.yAxis    
+    chart_money.yAxis    
+      .axisLabel('Income ($M)')
       .tickFormat(d3.format(',.2f'));      
   
-    return chart_race;
+    return chart_money;
     });
 
-var chart_race_pie;
-nv.addGraph(function() {
-    chart_race_pie = nv.models.pieChart()
-       .x(function(d) { return d.label })
-       .y(function(d) { return d.value })
-       .showLabels(true);
-       
-    return chart_race_pie;   
-  })
-                    
-var chart_money;
-nv.addGraph(function() {
-    var bar_labels = ['production', 'cost(private)', 'cost(public)'];
-    chart_money = nv.models.multiBarChart()
-       .reduceXTicks(false)   //If 'false', every single x-axis tick label will be rendered.
-       .rotateLabels(0)      //Angle to rotate x-axis labels.
-       .showControls(false)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
-       .groupSpacing(0.1)    //Distance between each group of bars.
-       .showXAxis(true)
-       .margin({left:150, bottom:30})
-       .transitionDuration(10)
-       .stacked(true);
-       
-       
-    chart_money.xAxis
-        .tickFormat(function(d) { return bar_labels[d];});                   
-    chart_money.yAxis
-        .tickFormat(d3.format(',.1f'));
-       
-    return chart_money;   
-  })
-    
     
 
 function doaction(action, replace) {
@@ -215,31 +177,14 @@ function update() {
     
         
     document.getElementById("score").innerHTML="<p>"+data.actions+"</p>";   
-    //if (steps==102) {
-    //        document.getElementById("score").className = 'score final';
-    //        document.getElementById("score").innerHTML="FINAL SCORE: <strong>"+score.toFixed(1)+"%%</strong>";
-   // } else {
-    //        document.getElementById("score").className = 'score';
-     //       document.getElementById("score").innerHTML="<p>"+data.actions+"</p>SCORE: <strong>"+score.toFixed(1)+"%%</strong>";
-    //}
-    
+
     d3.select('#chart_time svg')
         .datum(data.time)
         .call(chart_time);
     nv.utils.windowResize(chart_time.update);
     
-    d3.select('#chart_race svg')
-        .datum(data.race)
-        .call(chart_race);
-    nv.utils.windowResize(chart_race.update);
-
-    d3.select('#chart_race_pie svg')
-        .datum(data.race_pie)
-        .call(chart_race_pie);
-    nv.utils.windowResize(chart_race_pie.update);
-
     d3.select('#chart_money svg')
-        .datum(data.money)
+        .datum(data.graph_money)
         .call(chart_money);
     nv.utils.windowResize(chart_money.update);
     

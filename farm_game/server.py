@@ -21,6 +21,8 @@ seeds = {}
 names = {}
 
 colormap = {
+    'total_income': 'magenta',
+    'total_bankbalance': 'magenta',
     'prod_grapes': 'purple',
     'prod_peachesOrganicBabyGold': 'gold',
     'prod_peachesBabyGold': 'yellow',
@@ -196,6 +198,20 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         return self.generate_json_data(uuid)
 
+    def make_graph(self, data, *lines):
+        result = []
+        for key, label, scale in lines:
+            color = colormap[key]
+            values = []
+            for j in range(len(data[key])):
+                values.append(dict(x=float(j) / Server.substeps_per_step,
+                                   y=data[key][j] * scale))
+            values.append(dict(x=Server.maximum_steps, y=None))
+            result.append(dict(values=values, key=label, color=color,
+                               area=False))
+        return result
+
+
     def generate_json_data(self, uuid):
         data = self.run_game(uuid)
 
@@ -212,40 +228,7 @@ class Server(farm_game.swi.SimpleWebInterface):
             values.append(dict(x=Server.maximum_steps, y=None))
             time.append(dict(values=values, key=key[4:], color=color, area=False))
 
-
-        race = []
-        race_pie = []
-
-        for k in sorted(data.keys()):
-            if k.startswith('prod_'):
-                key = k[5:]
-                color = colormap[k]
-                values = []
-                for j in range(len(data[k])):
-                    values.append(dict(x=float(j)/Server.substeps_per_step, y=data[k][j]))
-                values.append(dict(x=Server.maximum_steps, y=None))
-                race.append(dict(values=values, key=key, color=color, area=False))
-
-                #p = data['proportion_%s' % key]
-                #race_pie.append(dict(label=key, value=p[-1], color=color))
-
-
-        grid = data['grid']
-
-
-        money = []
-        '''
-        runtime = len(data['production']) * 0.1
-        production = sum(data['production']) / runtime
-        cost_hiring = sum(data['cost_hiring']) / runtime
-        cost_salary = sum(data['cost_salary']) / runtime
-        interv_private = sum(data['interv_private']) / runtime
-        interv_public = sum(data['interv_public']) / runtime
-        money.append(dict(key='production', values=[{'x':0, 'y':production}, {'x':1, 'y':0}, {'x':2, 'y':0}]))
-        money.append(dict(key='hiring', values=[{'x':0, 'y':0}, {'x':1, 'y':cost_hiring}, {'x':2, 'y':0}]))
-        money.append(dict(key='salary', values=[{'x':0, 'y':0}, {'x':1, 'y':cost_salary}, {'x':2, 'y':0}]))
-        money.append(dict(key='intervention', values=[{'x':0, 'y':0}, {'x':1, 'y':interv_private}, {'x':2, 'y':interv_public}]))
-        '''
+        graph_money = self.make_graph(data, ('total_income', 'profit', 0.000001))
 
         action_texts = []
         for a in actions[uuid][1:]:
@@ -265,9 +248,10 @@ class Server(farm_game.swi.SimpleWebInterface):
             control_text = action.make_control_html(p)
             control_code = action.make_control_code(p)
 
+        grid = data['grid']
 
-        return json.dumps(dict(time=time, race=race, race_pie=race_pie,
-                               grid=grid, money=money, actions=a,
+        return json.dumps(dict(time=time, grid=grid, actions=a,
+                               graph_money=graph_money,
                                control_text=control_text,
                                control_code=control_code))
 

@@ -3,6 +3,7 @@ class Family:
         self.eutopia = eutopia
         self.farms = []
         self.bank_balance = 1000000.00
+        self.income = 0
         self.equipment = []
         self.preferences = {'money': 1}
         self.future_discounting = 0.9
@@ -41,6 +42,7 @@ class Family:
 
             money = activity.get_product('money', farm)
             self.bank_balance += money
+            self.income = money
 
             farm.last_activity = activity
             farm.update()
