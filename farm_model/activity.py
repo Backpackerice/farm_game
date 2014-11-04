@@ -8,7 +8,7 @@
 
 activities = {
 	 # Fresh, mid August, freestone.
-    'peachesRedhavenConventional': {
+    'Redhaven Conventional': {
         'equipment': ['tractor'],
         'times': {
         	'certificationDelayYears': 0,
