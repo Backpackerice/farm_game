@@ -228,7 +228,9 @@ class Server(farm_game.swi.SimpleWebInterface):
             values.append(dict(x=Server.maximum_steps, y=None))
             time.append(dict(values=values, key=key[4:], color=color, area=False))
 
-        graph_money = self.make_graph(data, ('total_income', 'profit', 0.000001))
+        graph_money = self.make_graph(data, ('total_income', 'income', 0.000001))
+        graph_carbon = self.make_graph(data, ('prod_carbon', 'carbon', 1.0))
+        graph_biodiversity = self.make_graph(data, ('prod_biodiversity', 'biodiversity', 1.0))
 
         action_texts = []
         for a in actions[uuid][1:]:
@@ -252,6 +254,8 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         return json.dumps(dict(time=time, grid=grid, actions=a,
                                graph_money=graph_money,
+                               graph_carbon=graph_carbon,
+                               graph_biodiversity=graph_biodiversity,
                                control_text=control_text,
                                control_code=control_code))
 

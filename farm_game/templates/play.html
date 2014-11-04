@@ -60,10 +60,13 @@
         <svg></svg>
       </div>
       
-      <div id='chart_race'>
+      <div id='chart_carbon' class='small_chart'>
         <svg></svg>
       </div>
       
+      <div id='chart_biodiversity' class='small_chart'>
+        <svg></svg>
+      </div>
       
       
       <div class='score' id='score'>
@@ -152,6 +155,52 @@ nv.addGraph(function() {
     });
 
     
+var chart_carbon;
+nv.addGraph(function() {
+    chart_carbon = nv.models.lineChart()
+                    .useInteractiveGuideline(true)
+                    .forceY([0, 10])
+     .options({
+    margin: {left: 80, bottom: 30},
+    showXAxis: false,
+    showYAxis: true,
+    showLegend: false,    
+    transitionDuration: 250
+  })
+                    
+    chart_carbon.xAxis     //Chart x-axis settings
+      .axisLabel('Time')
+      .tickFormat(d3.format(',.2f'));                    
+    chart_carbon.yAxis    
+      .axisLabel('carbon')
+      .tickFormat(d3.format(',.2f'));      
+  
+    return chart_carbon;
+    });
+    
+var chart_biodiversty;
+nv.addGraph(function() {
+    chart_biodiversity = nv.models.lineChart()
+                    .useInteractiveGuideline(true)
+                    .forceY([0, 10])
+     .options({
+    margin: {left: 80, bottom: 30},
+    showXAxis: false,
+    showYAxis: true,
+    showLegend: false,    
+    transitionDuration: 250
+  })
+                    
+    chart_biodiversity.xAxis     //Chart x-axis settings
+      .axisLabel('Time')
+      .tickFormat(d3.format(',.2f'));                    
+    chart_biodiversity.yAxis    
+      .axisLabel('Biodiversity')
+      .tickFormat(d3.format(',.2f'));      
+  
+    return chart_biodiversity;
+    });
+    
 
 function doaction(action, replace) {
     console.log(action);
@@ -187,6 +236,16 @@ function update() {
         .datum(data.graph_money)
         .call(chart_money);
     nv.utils.windowResize(chart_money.update);
+
+    d3.select('#chart_carbon svg')
+        .datum(data.graph_carbon)
+        .call(chart_carbon);
+    nv.utils.windowResize(chart_carbon.update);
+
+    d3.select('#chart_biodiversity svg')
+        .datum(data.graph_biodiversity)
+        .call(chart_biodiversity);
+    nv.utils.windowResize(chart_biodiversity.update);
     
     update_grid(data.grid);    
     
