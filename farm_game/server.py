@@ -21,11 +21,6 @@ seeds = {}
 names = {}
 
 colormap = {
-    'act_peachesRedhavenConventional': 'red',
-    'act_peachesRedhavenOrganic': 'pink',
-    'act_peachesBabyGoldConventional': 'yellow',
-    'act_peachesBabyGoldOrganic': 'gold',
-    'act_grapesCoronationConventional': 'purple',
     'prod_grapes': 'purple',
     'prod_peachesOrganicBabyGold': 'gold',
     'prod_peachesBabyGold': 'yellow',
@@ -36,8 +31,11 @@ colormap = {
     'prod_soil': 'brown',
     'prod_labour': '#888',
     'prod_biodiversity': 'green',
-
     }
+import farm_model
+for k,v in farm_model.activity.activities.items():
+    colormap['act_' + k] = v['color']
+
 
 
 class Server(farm_game.swi.SimpleWebInterface):
