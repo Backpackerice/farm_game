@@ -41,7 +41,7 @@ class Action(object):
             short = self.get_short_desc(b)
             code = self.get_code(b)
             label = b.get('label', short)
-            text = '''<input type='button' value='%s' onclick='doaction("%s");'/>'''
+            text = '''<input type='button' value="%s" onclick='doaction("%s");'/>'''
             text = text % (label, code)
             html.append(text)
         return ''.join(html)
@@ -126,6 +126,13 @@ class Actions(object):
         a.code = 'nothing'
         a.short_desc = 'Do nothing'
         a.add_button()
+
+        a = Action(self)
+        a.add_parameter('price', min=0, max=100.0, decimals=2)
+        a.desc = '''Farmer's selling price for grapes: ${price}.'''
+        a.code = 'price:grapes={price}'
+        a.short_desc = 'Compete.Price=${price}'
+        a.add_button(price=15, label="Competitor's Price")
 
         a = Action(self)
         a.add_parameter('wage', min=0, max=20.0, decimals=2)
