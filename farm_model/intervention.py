@@ -43,6 +43,29 @@ class PriceIntervention:
 
         money[self.product] = self.original_value * scale
 
+class SubsidyIntervention:
+    def __init__(self, time, product, percent):
+        self.time = time
+        self.product = product
+        self.percent = percent
+        self.original_value = None
+
+    def apply(self, eutopia, time):
+        assert time>=self.time
+
+        money = eutopia.activities.aggregates['money']
+        govt_cost = eutopia.activities.aggregates['govt_cost']
+
+        if self.original_value is None:
+            self.original_value = money[self.product]
+
+        scale = (100.0 - self.percent) / 100
+        money[self.product] = self.original_value * scale
+
+        govt_cost[self.product] = activity.Normal(
+                                   -self.original_value.mean * (1-scale), 0)
+
+
 class NewActivityIntervention:
     def __init__(self, time, name, activity):
         self.time = time

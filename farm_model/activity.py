@@ -130,7 +130,6 @@ class Normal:
         return Normal(self.mean*scale, self.sd*scale)
 
 
-
 aggregate_measures = {
     'money': {
         'peachesRedhaven': Normal(55,10),
@@ -140,6 +139,9 @@ aggregate_measures = {
         'grapes': Normal(15,10),
         'labour': Normal(5,1),
         'certification': Normal(1,0),
+        },
+    'govt_cost': {
+        'certification': Normal(0,0),
         },
     'environment': {
         'carbon': Normal(10,0),

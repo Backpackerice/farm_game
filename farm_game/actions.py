@@ -127,6 +127,13 @@ class Actions(object):
         a.add_button()
 
         a = Action(self)
+        a.add_parameter('percent', min=0, max=100.0, decimals=0)
+        a.desc = '''Create a {percent}% subsidy on certification.'''
+        a.code = 'subsidy:certification,{percent}'
+        a.short_desc = 'Certification Subsidy'
+        a.add_button(percent=50)
+
+        a = Action(self)
         a.add_parameter('price', min=0.01, max=100.0, decimals=2)
         a.desc = '''Price for organic Baby Gold peaches: ${price}'''
         a.code = 'price:peachesOrganicBabyGold={price}'

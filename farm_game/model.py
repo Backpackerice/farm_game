@@ -17,6 +17,7 @@ class Model:
                 'nitrogen',
                 'soil',
                 'biodiversity',
+                'govt_cost',
                ]
 
 
@@ -132,6 +133,10 @@ def run(seed, *actions):
                 pass
             elif action == 'none':
                 pass
+            elif action.startswith('subsidy:'):
+                product, percent = action[8:].split(',')
+                percent=float(percent)
+                interv = farm_model.intervention.SubsidyIntervention(i, product, percent)
             elif action.startswith('price:'):
                 if '*' in action[6:]:
                     product, value = action[6:].split('*')
@@ -159,8 +164,9 @@ def run(seed, *actions):
 
 if __name__ == '__main__':
 
-    data = run(1, 'init', 'nothing', 'none', 'price:peachesOrganicBabyGold*20',
-                    'none', 'none', 'none')
+    #data = run(1, 'init', 'none', 'none', 'price:peachesOrganicBabyGold*20', 'none', 'none', 'none')
+    data = run(2, 'init', 'none', 'subsidy:certification,100', 'none', 'none', 'none', 'none')
+    #data = run(2, 'init', 'none', 'none', 'none', 'none', 'none', 'none')
 
     print data
 

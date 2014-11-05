@@ -64,7 +64,7 @@
         <svg></svg>
       </div>
       
-      <div id='chart_biodiversity' class='small_chart'>
+      <div id='chart_govt_cost' class='small_chart'>
         <svg></svg>
       </div>
       
@@ -178,9 +178,9 @@ nv.addGraph(function() {
     return chart_carbon;
     });
     
-var chart_biodiversty;
+var chart_govt_cost;
 nv.addGraph(function() {
-    chart_biodiversity = nv.models.lineChart()
+    chart_govt_cost = nv.models.lineChart()
                     .useInteractiveGuideline(true)
                     .forceY([0, 10])
      .options({
@@ -191,14 +191,14 @@ nv.addGraph(function() {
     transitionDuration: 250
   })
                     
-    chart_biodiversity.xAxis     //Chart x-axis settings
+    chart_govt_cost.xAxis     //Chart x-axis settings
       .axisLabel('Time')
       .tickFormat(d3.format(',.2f'));                    
-    chart_biodiversity.yAxis    
-      .axisLabel('Biodiversity')
+    chart_govt_cost.yAxis    
+      .axisLabel('Public Cost')
       .tickFormat(d3.format(',.2f'));      
   
-    return chart_biodiversity;
+    return chart_govt_cost;
     });
     
 
@@ -242,10 +242,10 @@ function update() {
         .call(chart_carbon);
     nv.utils.windowResize(chart_carbon.update);
 
-    d3.select('#chart_biodiversity svg')
-        .datum(data.graph_biodiversity)
-        .call(chart_biodiversity);
-    nv.utils.windowResize(chart_biodiversity.update);
+    d3.select('#chart_govt_cost svg')
+        .datum(data.graph_govt_cost)
+        .call(chart_govt_cost);
+    nv.utils.windowResize(chart_govt_cost.update);
     
     update_grid(data.grid);    
     
