@@ -128,6 +128,13 @@ class Actions(object):
         a.add_button()
 
         a = Action(self)
+        a.add_parameter('wage', min=0, max=20.0, decimals=2)
+        a.desc = '''Cost of labour: ${wage}/hr.'''
+        a.code = 'price:labour={wage}'
+        a.short_desc = 'Min.Wage=${wage}'
+        a.add_button(wage=5, label='Minimum Wage')
+
+        a = Action(self)
         a.add_parameter('percent', min=0, max=100.0, decimals=0)
         a.desc = '''Create a {percent}% subsidy on certification.'''
         a.code = 'subsidy:certification,{percent}'
