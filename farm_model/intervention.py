@@ -53,6 +53,8 @@ class SubsidyIntervention:
     def apply(self, eutopia, time):
         assert time>=self.time
 
+        if time > self.time + 1: return
+
         money = eutopia.activities.aggregates['money']
         govt_cost = eutopia.activities.aggregates['govt_cost']
 
@@ -64,6 +66,30 @@ class SubsidyIntervention:
 
         govt_cost[self.product] = activity.Normal(
                                    -self.original_value.mean * (1-scale), 0)
+
+class QualityAndShippingIntervention:
+    def __init__(self, time, price_increase, retail_increase, fixed_cost):
+        self.time = time
+        self.price_increase = price_increase
+        self.retail_increase = retail_increase
+        self.fixed_cost = fixed_cost
+
+    def apply(self, eutopia, time):
+        assert time>=self.time
+
+        if time > self.time + 1: return
+
+        money = eutopia.activities.aggregates['money']
+        retail = eutopia.activities.aggregates['retail_profit']
+
+        peaches = ['peachesRedhaven', 'peachesBabyGold',
+                   'peachesOrganicRedhaven', 'peachesOrganicBabyGold']
+
+        for peach in peaches:
+            money[peach] = money[peach] + self.price_increase
+            retail[peach] = retail[peach] + self.retail_increase
+
+        eutopia.govt_cost += self.fixed_cost
 
 
 class NewActivityIntervention:

@@ -123,9 +123,21 @@ class Actions(object):
     def make_actions(self):
         a = Action(self)
         a.desc = '''Make no policy changes.'''
-        a.code = 'nothing'
+        a.code = 'none'
         a.short_desc = 'Do nothing'
         a.add_button()
+
+        a = Action(self)
+        a.add_parameter('price', min=0, max=50.0, decimals=2)
+        a.add_parameter('retail', min=0, max=50.0, decimals=2)
+        a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
+        a.desc = '''Additional income to farmers for all peaches: ${price}.
+        Additional retail income for all peaches: ${retail}.
+        One-time public cost: ${fixed_cost}'''
+        a.code = 'quality:{price},{retail},{fixed_cost}'
+        a.short_desc = 'Qual=${price}/${retail}:${fixed_cost}'
+        a.add_button(price=1, retail=1, fixed_cost=10000,
+                     label="Quality and Shipping")
 
         a = Action(self)
         a.add_parameter('price', min=0, max=100.0, decimals=2)

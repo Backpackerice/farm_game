@@ -68,6 +68,9 @@
         <svg></svg>
       </div>
       
+      <div id='chart_retail_profit' class='small_chart'>
+        <svg></svg>
+      </div>
       
       <div class='score' id='score'>
             
@@ -200,6 +203,30 @@ nv.addGraph(function() {
   
     return chart_govt_cost;
     });
+
+var chart_retail_profit;
+nv.addGraph(function() {
+    chart_retail_profit = nv.models.lineChart()
+                    .useInteractiveGuideline(true)
+                    .forceY([0, 10])
+     .options({
+    margin: {left: 80, bottom: 30},
+    showXAxis: false,
+    showYAxis: true,
+    showLegend: false,    
+    transitionDuration: 250
+  })
+                    
+    chart_retail_profit.xAxis     //Chart x-axis settings
+      .axisLabel('Time')
+      .tickFormat(d3.format(',.2f'));                    
+    chart_retail_profit.yAxis    
+      .axisLabel('Extra Retail Profit')
+      .tickFormat(d3.format(',.2f'));      
+  
+    return chart_retail_profit;
+    });
+
     
 
 function doaction(action, replace) {
@@ -246,6 +273,11 @@ function update() {
         .datum(data.graph_govt_cost)
         .call(chart_govt_cost);
     nv.utils.windowResize(chart_govt_cost.update);
+
+    d3.select('#chart_retail_profit svg')
+        .datum(data.graph_retail_profit)
+        .call(chart_retail_profit);
+    nv.utils.windowResize(chart_retail_profit.update);
     
     update_grid(data.grid);    
     

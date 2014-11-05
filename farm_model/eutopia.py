@@ -24,6 +24,8 @@ class Eutopia:
             family.add_farm(farm)
             self.families.append(family)
 
+        self.govt_cost = 0
+
     def step(self):
         for family in self.families:
             family.step()

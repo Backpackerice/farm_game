@@ -18,6 +18,7 @@ class Model:
                 'soil',
                 'biodiversity',
                 'govt_cost',
+                'retail_profit',
                ]
 
 
@@ -68,8 +69,12 @@ class Model:
     def get_total_income(self):
         return sum([f.income for f in self.model.families])
     def get_product(self, product):
-        return sum([f.last_activity.get_product(product, f)
+        v = sum([f.last_activity.get_product(product, f)
                     for f in self.model.farms])
+        if product == 'govt_cost':
+            v += self.model.govt_cost
+            self.model.govt_cost = 0
+        return v
 
     def get_grid(self):
         grid = []
@@ -137,6 +142,13 @@ def run(seed, *actions):
                 product, percent = action[8:].split(',')
                 percent=float(percent)
                 interv = farm_model.intervention.SubsidyIntervention(i, product, percent)
+            elif action.startswith('quality:'):
+                price, retail, fixed_cost = action[8:].split(',')
+                price = float(price)
+                retail = float(retail)
+                fixed_cost = float(fixed_cost)
+                interv = farm_model.intervention.QualityAndShippingIntervention(
+                        i, price, retail, fixed_cost)
             elif action.startswith('price:'):
                 if '*' in action[6:]:
                     product, value = action[6:].split('*')
@@ -165,8 +177,9 @@ def run(seed, *actions):
 if __name__ == '__main__':
 
     #data = run(1, 'init', 'none', 'none', 'price:peachesOrganicBabyGold*20', 'none', 'none', 'none')
-    data = run(2, 'init', 'none', 'subsidy:certification,100', 'none', 'none', 'none', 'none')
+    #data = run(2, 'init', 'none', 'subsidy:certification,100', 'none', 'none', 'none', 'none')
     #data = run(2, 'init', 'none', 'none', 'none', 'none', 'none', 'none')
+    data = run(2, 'init', 'none', 'none', 'quality:20,20,10000', 'none', 'none', 'none')
 
     print data
 

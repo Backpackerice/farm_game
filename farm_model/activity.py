@@ -128,6 +128,8 @@ class Normal:
         return rng.randn()*self.sd + self.mean
     def __mul__(self, scale):
         return Normal(self.mean*scale, self.sd*scale)
+    def __add__(self, inc):
+        return Normal(self.mean + inc, self.sd)
 
 
 aggregate_measures = {
@@ -142,6 +144,13 @@ aggregate_measures = {
         },
     'govt_cost': {
         'certification': Normal(0,0),
+        },
+    'retail_profit': {
+        'peachesRedhaven': Normal(0,0),
+        'peachesBabyGold': Normal(0,0),
+        'peachesOrganicRedhaven': Normal(0,0),
+        'peachesOrganicBabyGold': Normal(0,0),
+        'grapes': Normal(0,0),
         },
     'environment': {
         'carbon': Normal(10,0),

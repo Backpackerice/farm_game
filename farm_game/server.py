@@ -34,6 +34,7 @@ colormap = {
     'prod_labour': '#888',
     'prod_biodiversity': 'green',
     'prod_govt_cost': 'green',
+    'prod_retail_profit': 'brown',
     }
 import farm_model
 for k,v in farm_model.activity.activities.items():
@@ -100,11 +101,13 @@ class Server(farm_game.swi.SimpleWebInterface):
             income = sum(data[uuid]['total_income']) / runtime
             carbon = sum(data[uuid]['prod_carbon']) / runtime
             govt_cost = sum(data[uuid]['prod_govt_cost']) / runtime
+            retail_profit = sum(data[uuid]['prod_retail_profit']) / runtime
 
             values = [
                 dict(x=0, y=income),
                 dict(x=1, y=carbon),
                 dict(x=2, y=govt_cost),
+                dict(x=3, y=retail_profit),
                 ]
 
 
@@ -215,6 +218,7 @@ class Server(farm_game.swi.SimpleWebInterface):
         graph_money = self.make_graph(data, ('total_income', 'income', 0.000001))
         graph_carbon = self.make_graph(data, ('prod_carbon', 'carbon', 1.0))
         graph_govt_cost = self.make_graph(data, ('prod_govt_cost', 'public costs', 1.0))
+        graph_retail_profit = self.make_graph(data, ('prod_retail_profit', 'extra retail profit', 1.0))
 
         action_texts = []
         for a in actions[uuid][1:]:
@@ -240,6 +244,7 @@ class Server(farm_game.swi.SimpleWebInterface):
                                graph_money=graph_money,
                                graph_carbon=graph_carbon,
                                graph_govt_cost=graph_govt_cost,
+                               graph_retail_profit=graph_retail_profit,
                                control_text=control_text,
                                control_code=control_code))
 
