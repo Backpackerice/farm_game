@@ -40,8 +40,9 @@ class Action(object):
         for b in self.buttons:
             short = self.get_short_desc(b)
             code = self.get_code(b)
+            label = b.get('label', short)
             text = '''<input type='button' value='%s' onclick='doaction("%s");'/>'''
-            text = text % (short, code)
+            text = text % (label, code)
             html.append(text)
         return ''.join(html)
 
@@ -130,8 +131,8 @@ class Actions(object):
         a.add_parameter('percent', min=0, max=100.0, decimals=0)
         a.desc = '''Create a {percent}% subsidy on certification.'''
         a.code = 'subsidy:certification,{percent}'
-        a.short_desc = 'Certification Subsidy'
-        a.add_button(percent=50)
+        a.short_desc = 'Cert.Subsidy={percent}%'
+        a.add_button(percent=50, label='Certification Subsidy')
 
         a = Action(self)
         a.add_parameter('price', min=0.01, max=100.0, decimals=2)
