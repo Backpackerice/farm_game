@@ -124,8 +124,20 @@ class Actions(object):
         a = Action(self)
         a.desc = '''Make no policy changes.'''
         a.code = 'none'
-        a.short_desc = 'Do nothing'
-        a.add_button()
+        a.short_desc = 'nothing new'
+        a.add_button(label='Do nothing')
+
+        a = Action(self)
+        a.add_parameter('p_conv', min=0, max=50.0, decimals=2)
+        a.add_parameter('p_org', min=0, max=50.0, decimals=2)
+        a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
+        a.desc = '''Additional income to farmers for conventional peaches: ${p_conv}.
+        Additional income to farmers for organic peaches: ${p_org}.
+        One-time public cost: ${fixed_cost}'''
+        a.code = 'local:{p_conv},{p_org},{fixed_cost}'
+        a.short_desc = 'Local:${p_conv},${p_org}|${fixed_cost}'
+        a.add_button(p_conv=1, p_org=1, fixed_cost=10000,
+                     label="Local Markets")
 
         a = Action(self)
         a.add_parameter('price', min=0, max=50.0, decimals=2)
@@ -135,7 +147,7 @@ class Actions(object):
         Additional retail income for all peaches: ${retail}.
         One-time public cost: ${fixed_cost}'''
         a.code = 'quality:{price},{retail},{fixed_cost}'
-        a.short_desc = 'Qual=${price}/${retail}:${fixed_cost}'
+        a.short_desc = 'Qual=${price},${retail}|${fixed_cost}'
         a.add_button(price=1, retail=1, fixed_cost=10000,
                      label="Quality and Shipping")
 

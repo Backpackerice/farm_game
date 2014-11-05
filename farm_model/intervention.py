@@ -91,6 +91,27 @@ class QualityAndShippingIntervention:
 
         eutopia.govt_cost += self.fixed_cost
 
+class LocalMarketIntervention:
+    def __init__(self, time, conv_increase, organic_increase, fixed_cost):
+        self.time = time
+        self.conv_increase = conv_increase
+        self.organic_increase = organic_increase
+        self.fixed_cost = fixed_cost
+
+    def apply(self, eutopia, time):
+        assert time>=self.time
+
+        if time > self.time + 1: return
+
+        money = eutopia.activities.aggregates['money']
+
+        for peach in ['peachesRedhaven', 'peachesBabyGold']:
+            money[peach] = money[peach] + self.conv_increase
+
+        for peach in ['peachesOrganicRedhaven', 'peachesOrganicBabyGold']:
+            money[peach] = money[peach] + self.organic_increase
+
+        eutopia.govt_cost += self.fixed_cost
 
 class NewActivityIntervention:
     def __init__(self, time, name, activity):

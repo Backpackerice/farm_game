@@ -149,6 +149,11 @@ def run(seed, *actions):
                 fixed_cost = float(fixed_cost)
                 interv = farm_model.intervention.QualityAndShippingIntervention(
                         i, price, retail, fixed_cost)
+            elif action.startswith('local:'):
+                price_conv, price_org, fixed_cost = action[6:].split(',')
+                interv = farm_model.intervention.LocalMarketIntervention(
+                        i, float(price_conv), float(price_org),
+                        float(fixed_cost))
             elif action.startswith('price:'):
                 if '*' in action[6:]:
                     product, value = action[6:].split('*')
