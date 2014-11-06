@@ -121,49 +121,40 @@ class Actions(object):
         return ' '.join(html)
 
     def make_actions(self):
+
+        # INTERVENTIONS
         a = Action(self)
         a.desc = '''Make no policy changes.'''
         a.code = 'none'
-        a.short_desc = 'Nothing new'
+        a.short_desc = 'Nothing New'
         a.add_button(label='Do Nothing')
 
         a = Action(self)
-        a.add_parameter('p_conv', min=0, max=50.0, decimals=2)
-        a.add_parameter('p_org', min=0, max=50.0, decimals=2)
+        a.add_parameter('p_conv', min=0, max=2.0, decimals=2)
+        a.add_parameter('p_org', min=0, max=2.0, decimals=2)
         a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
-        a.desc = '''Additional income to farmers for conventional peaches: ${p_conv}.
-        Additional income to farmers for organic peaches: ${p_org}.
-        One-time public cost: ${fixed_cost}'''
+        a.desc = '''Slider 1: Premium paid by consumers for local peaches: ${p_conv}/lb. 
+        Slider 2:  Premium paid by consumers for local organic peaches: ${p_org}/lb.
+        Slider 3: One-time public cost for campaign: ${fixed_cost}.'''
         a.code = 'local:{p_conv},{p_org},{fixed_cost}'
         a.short_desc = 'Local: ${p_conv}, ${p_org} | ${fixed_cost}'
-        a.add_button(p_conv=1, p_org=1, fixed_cost=10000,
-                     label="Local Markets")
+        a.add_button(p_conv=0.05, p_org=0.2, fixed_cost=10000,
+                     label="Marketing 'Local'")
 
         a = Action(self)
-        a.add_parameter('price', min=0, max=50.0, decimals=2)
-        a.add_parameter('retail', min=0, max=50.0, decimals=2)
+        a.add_parameter('price', min=0, max=1.0, decimals=2)
+        a.add_parameter('retail', min=0, max=1.0, decimals=2)
         a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
-        a.desc = '''Additional income to farmers for all peaches: ${price}.
-        Additional retail income for all peaches: ${retail}.
-        One-time public cost: ${fixed_cost}'''
+        # ADD extra slider 3. Reduction in spoilage. Less waste (% of yeild) (4% 0-100%). Waste. longer life.. 
+        # CHANGE to a cost to farmers/farm
+        a.desc = '''Slider 1: Premium for higher quality and longer life to farmers: ${price}/lb.
+        Slider 2: Premium for higher quality and longer life to farmers: ${retail}/lb.
+        Slider 3: *** ADD Waste (%)
+        Slider 4: One-time cost to farmers *** CHANGE: ${fixed_cost}/farm.'''
         a.code = 'quality:{price},{retail},{fixed_cost}'
         a.short_desc = 'Qual: ${price}, ${retail} | ${fixed_cost}'
-        a.add_button(price=1, retail=1, fixed_cost=10000,
-                     label="Quality and Shipping")
-
-        a = Action(self)
-        a.add_parameter('price', min=0, max=100.0, decimals=2)
-        a.desc = '''Farmer's selling price for grapes: ${price}.'''
-        a.code = 'price:grapes={price}'
-        a.short_desc = 'Compete. Price: ${price}'
-        a.add_button(price=15, label="Competitor's Price")
-
-        a = Action(self)
-        a.add_parameter('wage', min=0, max=20.0, decimals=2)
-        a.desc = '''Cost of labour: ${wage}/hr.'''
-        a.code = 'price:labour={wage}'
-        a.short_desc = 'Min. Wage = ${wage}'
-        a.add_button(wage=5, label='Minimum Wage')
+        a.add_button(price=0.05, retail=0.05, fixed_cost=10000,
+                     label="Quality in Shipping")
 
         a = Action(self)
         a.add_parameter('percent', min=0, max=100.0, decimals=0)
@@ -171,6 +162,30 @@ class Actions(object):
         a.code = 'subsidy:certification,{percent}'
         a.short_desc = 'Cert. Subsidy: {percent}%'
         a.add_button(percent=50, label='Certification Subsidy')
+
+        # MARKET FORCES/BROADER SYSTEM. PUT ON A DIFFERENT LINE OR COLOUR
+        a = Action(self)
+        a.add_parameter('price', min=0, max=10.0, decimals=2)
+        a.desc = '''Farmer's selling price for grapes, a competing product: ${price}.'''
+        a.code = 'price:grapes={price}'
+        a.short_desc = 'Compete. Price: ${price}'
+        a.add_button(price=5, label="Competitor's Price")
+
+        a = Action(self)
+        a.add_parameter('wage', min=0, max=20.0, decimals=2)
+        a.desc = '''Cost of labour: ${wage}/hr.'''
+        a.code = 'price:labour={wage}'
+        a.short_desc = 'Min. Wage = ${wage}'
+        a.add_button(wage=11.00, label='Minimum Wage')
+
+        # # ADD A BUTTON FOR PRICE ON CARBON
+        # a = Action(self)
+        # a.add_parameter('price', min=0, max=20.0, decimals=2)
+        # a.desc = '''Cost of carbon: ${price}/hr.'''
+        # a.code = 'price:RedHaven={price}'
+        # a.short_desc = 'Cost. Carbon = ${price}'
+        # a.add_button(price=5, label='Price on Carbon')
+
 
         # a = Action(self)
         # a.add_parameter('price', min=0.01, max=100.0, decimals=2)
