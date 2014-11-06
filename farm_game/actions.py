@@ -41,8 +41,11 @@ class Action(object):
             short = self.get_short_desc(b)
             code = self.get_code(b)
             label = b.get('label', short)
-            text = '''<input type='button' value="%s" onclick='doaction("%s");'/>'''
-            text = text % (label, code)
+            style = b.get('style', '')
+            if style != '':
+                style = ' style="%s"' % style
+            text = '''<input type='button' value="%s" onclick='doaction("%s");'%s/>'''
+            text = text % (label, code, style)
             html.append(text)
         return ''.join(html)
 
@@ -127,25 +130,25 @@ class Actions(object):
         a.desc = '''Make no policy changes.'''
         a.code = 'none'
         a.short_desc = 'Nothing New'
-        a.add_button(label='Do Nothing')
+        #a.add_button(label='Do Nothing')
 
         a = Action(self)
         a.add_parameter('p_conv', min=0, max=2.0, decimals=2)
         a.add_parameter('p_org', min=0, max=2.0, decimals=2)
         a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
-        a.desc = '''Slider 1: Premium paid by consumers for local peaches: ${p_conv}/lb. 
+        a.desc = '''Slider 1: Premium paid by consumers for local peaches: ${p_conv}/lb.
         Slider 2:  Premium paid by consumers for local organic peaches: ${p_org}/lb.
         Slider 3: One-time public cost for campaign: ${fixed_cost}.'''
         a.code = 'local:{p_conv},{p_org},{fixed_cost}'
         a.short_desc = 'Local: ${p_conv}, ${p_org} | ${fixed_cost}'
         a.add_button(p_conv=0.05, p_org=0.2, fixed_cost=10000,
-                     label="Marketing 'Local'")
+                label="Marketing 'Local'", style="background:yellow")
 
         a = Action(self)
         a.add_parameter('price', min=0, max=1.0, decimals=2)
         a.add_parameter('retail', min=0, max=1.0, decimals=2)
         a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
-        # ADD extra slider 3. Reduction in spoilage. Less waste (% of yeild) (4% 0-100%). Waste. longer life.. 
+        # ADD extra slider 3. Reduction in spoilage. Less waste (% of yeild) (4% 0-100%). Waste. longer life..
         # CHANGE to a cost to farmers/farm
         a.desc = '''Slider 1: Premium for higher quality and longer life to farmers: ${price}/lb.
         Slider 2: Premium for higher quality and longer life to farmers: ${retail}/lb.
@@ -154,14 +157,14 @@ class Actions(object):
         a.code = 'quality:{price},{retail},{fixed_cost}'
         a.short_desc = 'Qual: ${price}, ${retail} | ${fixed_cost}'
         a.add_button(price=0.05, retail=0.05, fixed_cost=10000,
-                     label="Quality in Shipping")
+                label="Quality in Shipping", style="background:yellow")
 
         a = Action(self)
         a.add_parameter('percent', min=0, max=100.0, decimals=0)
         a.desc = '''Create a {percent}% subsidy on certification.'''
         a.code = 'subsidy:certification,{percent}'
         a.short_desc = 'Cert. Subsidy: {percent}%'
-        a.add_button(percent=50, label='Certification Subsidy')
+        a.add_button(percent=50, label='Certification Subsidy', style="background:yellow")
 
         # MARKET FORCES/BROADER SYSTEM. PUT ON A DIFFERENT LINE OR COLOUR
         a = Action(self)
