@@ -6,9 +6,25 @@ Blue-sky random ideas for the game
     - processors
     - distributer
     - retailer
+    - consumer
 - When you take on a role, the computer takes over everyone else
     - different perspectives, different measures highlighted
 - do you control one member of the class or many members? both as options?
 
 
 - Ability to change choices far back in time
+
+
+- All interventions should start with values that indicate the status quo
+    - people said "oh, it's already at {x}" rather than realizing they'd put it there by clicking on the intervention
+- It wasn't clear that clicking on a new intervention makes time go forward
+    - So all interventions should start at time=0, and maybe have parameters
+      as to how long they last for
+        - no restriction of 1 intervention per time step
+    - Clicking on an intervention just changes what you're looking at (like tabs)
+    - No stacking of the same intervention
+- When you make a change, see how it'll affect the future
+    - (annoying to have to click on 'do nothing' over and over
+
+    
+
