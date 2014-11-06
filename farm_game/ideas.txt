@@ -1,0 +1,12 @@
+Blue-sky random ideas for the game
+
+- Multiple modes where you play as different types of actor:
+    - policy decision makers (this is the current game)
+    - one farmer (decide what to plant, where to sell it)
+    - processors
+    - distributer
+    - retailer
+- When you take on a role, the computer takes over everyone else
+    - different perspectives, different measures highlighted
+
+
