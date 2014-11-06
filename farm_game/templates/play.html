@@ -36,7 +36,7 @@
         <input type='button' value='Restart' onclick='doaction("init");'/>
         <input type='button' value='Undo' onclick='doaction("undo")';/>
         <input type='button' value='Do nothing' onclick='doaction("none")';/>
-        Game #: <input id='seed' type='text' value='%(seed)s' onchange='update_seed();'/>
+        Game #: <input id='seed' type='text' value='%(seed)s' onchange='update_seed(); this.blur();'/>
         <br/>
         %(action_buttons)s
         </div>
