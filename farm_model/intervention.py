@@ -68,10 +68,12 @@ class SubsidyIntervention:
                                    -self.original_value.mean * (1-scale), 0)
 
 class QualityAndShippingIntervention:
-    def __init__(self, time, price_increase, retail_increase, fixed_cost):
+    def __init__(self, time, price_increase, retail_increase, yield_increase,
+                       fixed_cost):
         self.time = time
         self.price_increase = price_increase
         self.retail_increase = retail_increase
+        self.yield_increase = yield_increase
         self.fixed_cost = fixed_cost
 
     def apply(self, eutopia, time):
@@ -88,6 +90,20 @@ class QualityAndShippingIntervention:
         for peach in peaches:
             money[peach] = money[peach] + self.price_increase
             retail[peach] = retail[peach] + self.retail_increase
+            for act in eutopia.activities.activities:
+                if peach in act.products:
+                    value = act.products[peach]
+                    if isinstance(value, (int, float)):
+                        value = value * (1 + self.yield_increase)
+                    elif isinstance(value, str):
+                        value = '(%s) * %g' % (value, 1 + self.yield_increase)
+                    else:
+                        raise Exception('Cannot handle value %s' % value)
+                    act.products[peach] = value
+
+        #for f in eutopia.families:
+        #    f.bank_balance -= self.fixed_cost
+        #    f.income -= self.fixed_cost
 
         eutopia.govt_cost += self.fixed_cost
 

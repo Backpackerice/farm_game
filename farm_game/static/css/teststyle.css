@@ -141,7 +141,7 @@ div#chart_time {
 
 div.small_chart {
     display: inline-block;
-    width: 20%;
+    width: 18%;
     height: 150px;   
     margin: 0px;
     padding: 0px;    
@@ -197,5 +197,5 @@ table.interventions th{
 #control_info {
     margin: 20px;
     background: white;
-    height: 100px;
+    height: 175px;
     }

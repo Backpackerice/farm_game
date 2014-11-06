@@ -143,12 +143,13 @@ def run(seed, *actions):
                 percent=float(percent)
                 interv = farm_model.intervention.SubsidyIntervention(i, product, percent)
             elif action.startswith('quality:'):
-                price, retail, fixed_cost = action[8:].split(',')
+                price, retail, yield_inc, fixed_cost = action[8:].split(',')
                 price = float(price)
                 retail = float(retail)
+                yield_inc = float(yield_inc) / 100.0
                 fixed_cost = float(fixed_cost)
                 interv = farm_model.intervention.QualityAndShippingIntervention(
-                        i, price, retail, fixed_cost)
+                        i, price, retail, yield_inc, fixed_cost)
             elif action.startswith('local:'):
                 price_conv, price_org, fixed_cost = action[6:].split(',')
                 interv = farm_model.intervention.LocalMarketIntervention(

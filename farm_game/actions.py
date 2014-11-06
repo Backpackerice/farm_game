@@ -147,16 +147,15 @@ class Actions(object):
         a = Action(self)
         a.add_parameter('price', min=0, max=1.0, decimals=2)
         a.add_parameter('retail', min=0, max=1.0, decimals=2)
+        a.add_parameter('yield_inc', min=0.0, max=100.0, decimals=0)
         a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
-        # ADD extra slider 3. Reduction in spoilage. Less waste (% of yeild) (4% 0-100%). Waste. longer life..
-        # CHANGE to a cost to farmers/farm
-        a.desc = '''Slider 1: Premium for higher quality and longer life to farmers: ${price}/lb.
-        Slider 2: Premium for higher quality and longer life to farmers: ${retail}/lb.
-        Slider 3: *** ADD Waste (%)
-        Slider 4: One-time cost to farmers *** CHANGE: ${fixed_cost}/farm.'''
-        a.code = 'quality:{price},{retail},{fixed_cost}'
-        a.short_desc = 'Qual: ${price}, ${retail} | ${fixed_cost}'
-        a.add_button(price=0.05, retail=0.05, fixed_cost=10000,
+        a.desc = '''Premium for higher quality and longer life to farmers: ${price}/lb.
+        Premium for higher quality and longer life to retailers: ${retail}/lb.
+        Increased yield due to less waste: {yield_inc}%
+        One-time cost per farmer: ${fixed_cost}/farm.'''
+        a.code = 'quality:{price},{retail},{yield_inc},{fixed_cost}'
+        a.short_desc = 'Qual: ${price}, ${retail}, {yield_inc}% | ${fixed_cost}'
+        a.add_button(price=0.05, retail=0.05, fixed_cost=1000, yield_inc=0,
                 label="Quality in Shipping", style="background:yellow")
 
         a = Action(self)
