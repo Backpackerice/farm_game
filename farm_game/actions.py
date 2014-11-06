@@ -125,7 +125,7 @@ class Actions(object):
         a.desc = '''Make no policy changes.'''
         a.code = 'none'
         a.short_desc = 'nothing new'
-        a.add_button(label='Do nothing')
+        a.add_button(label='Do Nothing')
 
         a = Action(self)
         a.add_parameter('p_conv', min=0, max=50.0, decimals=2)

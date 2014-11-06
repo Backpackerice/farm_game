@@ -8,7 +8,7 @@
 
 activities = {
 	 # Fresh, mid August, freestone.
-    'Redhaven Conventional': {
+    'Redhaven': {
         'equipment': ['tractor'],
         'times': {
         	'certificationDelayYears': 0,
@@ -26,10 +26,10 @@ activities = {
             'labour': -200,		# hours per km^2/year
             'certification': 0,
             },
-        'color': 'red',
+        'color': '#FF0066',
         'counters': ['red_haven'],
         },
-    'peachesRedhavenOrganic': {
+    'Redhaven Organic': {
         'equipment': ['tractor'],
         'times': {
         	'certificationDelayYears': 3,
@@ -48,12 +48,12 @@ activities = {
             'labour': -220,		# hours per km^2/year
             'certification': -10, # $/(km^2 year)
             },
-        'color': 'pink',
+        'color': '#009933',
         'counters': ['red_haven', 'organic'],
         },
 
 	 # Canning, late August, freestone.
-    'peachesBabyGoldConventional': {
+    'Baby Gold': {
         'equipment': ['tractor'],
         'times': {
         	'certificationDelayYears': 0,
@@ -71,10 +71,10 @@ activities = {
             'labour': -200,		# hours per km^2/year
             'certification': 0,
             },
-        'color': 'yellow',
+        'color': '#FF9933',
         'counters': ['baby_gold'],
         },
-    'peachesBabyGoldOrganic': {
+    'Baby Gold Organic': {
         'equipment': ['tractor'],
         'times': {
         	'certificationDelayYears': 3,
@@ -93,11 +93,11 @@ activities = {
             'labour': -220,		# hours per km^2/year
             'certification': -10, # $/(km^2 year)
             },
-        'color': 'gold',
+        'color': '#33CC33',
         'counters': ['baby_gold', 'organic'],
         },
 	 # Coronation seedless grapes, mid August through to end of September.
-    'grapesCoronationConventional': {
+    'Coronation Grapes': {
         'equipment': ['tractor'],
         'times': {
         	'certificationDelayYears': 0,
@@ -115,7 +115,7 @@ activities = {
             'labour': -200,		# hours per km^2/year
             'certification': 0,
             },
-        'color': 'purple',
+        'color': '#5C00B8',
         'counters': ['grapes'],
         },
     }
