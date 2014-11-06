@@ -8,5 +8,7 @@ Blue-sky random ideas for the game
     - retailer
 - When you take on a role, the computer takes over everyone else
     - different perspectives, different measures highlighted
+- do you control one member of the class or many members? both as options?
 
 
+- Ability to change choices far back in time

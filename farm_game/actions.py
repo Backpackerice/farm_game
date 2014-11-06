@@ -136,9 +136,12 @@ class Actions(object):
         a.add_parameter('p_conv', min=0, max=2.0, decimals=2)
         a.add_parameter('p_org', min=0, max=2.0, decimals=2)
         a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
-        a.desc = '''Slider 1: Premium paid by consumers for local peaches: ${p_conv}/lb.
-        Slider 2:  Premium paid by consumers for local organic peaches: ${p_org}/lb.
-        Slider 3: One-time public cost for campaign: ${fixed_cost}.'''
+        a.desc = '''<strong>Slider 1:</strong> Premium paid by consumers for local peaches: ${p_conv}/lb.
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <strong>Slider 2:</strong>  Premium paid by consumers for local organic peaches: ${p_org}/lb.<br/>
+
+        <strong>Slider 3:</strong> One-time public cost for campaign: ${fixed_cost}.'''
         a.code = 'local:{p_conv},{p_org},{fixed_cost}'
         a.short_desc = 'Local: ${p_conv}, ${p_org} | ${fixed_cost}'
         a.add_button(p_conv=0.05, p_org=0.2, fixed_cost=10000,
@@ -164,7 +167,7 @@ class Actions(object):
 
         a = Action(self)
         a.add_parameter('percent', min=0, max=100.0, decimals=0)
-        a.desc = '''Create a {percent}% subsidy on certification and transition costs.'''
+        a.desc = '''Create a <strong>{percent}%</strong> subsidy on certification and transition costs.'''
         a.code = 'subsidy:certification,{percent}'
         a.short_desc = 'Cert. Subsidy: {percent}%'
         a.add_button(percent=50, label='Certification Subsidy', style="background:yellow")
@@ -172,14 +175,14 @@ class Actions(object):
         # MARKET FORCES/BROADER SYSTEM. PUT ON A DIFFERENT LINE OR COLOUR
         a = Action(self)
         a.add_parameter('price', min=0, max=10.0, decimals=2)
-        a.desc = '''Farmer's selling price for grapes, a competing product: ${price}.'''
+        a.desc = '''Farmer's selling price for grapes, a competing product: <strong>${price}</strong>.'''
         a.code = 'price:grapes={price}'
         a.short_desc = 'Compete. Price: ${price}'
         a.add_button(price=5, label="Competitor's Price")
 
         a = Action(self)
         a.add_parameter('wage', min=0, max=20.0, decimals=2)
-        a.desc = '''Cost of labour: ${wage}/hr.'''
+        a.desc = '''Cost of labour: <strong>${wage}/hr</strong>.'''
         a.code = 'price:labour={wage}'
         a.short_desc = 'Min. Wage = ${wage}'
         a.add_button(wage=11.00, label='Minimum Wage')
