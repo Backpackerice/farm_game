@@ -202,7 +202,7 @@ class Server(farm_game.swi.SimpleWebInterface):
     def generate_json_data(self, uuid):
         data = self.run_game(uuid)
 
-        keys = [k for k in data.keys() if k.startswith('act_')]
+        keys = [k for k in sorted(data.keys()) if k.startswith('act_')]
 
         time = []
         for i in range(len(keys)):

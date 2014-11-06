@@ -164,7 +164,7 @@ class Actions(object):
 
         a = Action(self)
         a.add_parameter('percent', min=0, max=100.0, decimals=0)
-        a.desc = '''Create a {percent}% subsidy on certification.'''
+        a.desc = '''Create a {percent}% subsidy on certification and transition costs.'''
         a.code = 'subsidy:certification,{percent}'
         a.short_desc = 'Cert. Subsidy: {percent}%'
         a.add_button(percent=50, label='Certification Subsidy', style="background:yellow")
