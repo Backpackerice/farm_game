@@ -163,6 +163,10 @@ def run(seed, *actions):
                 elif '=' in action[6:]:
                     product, value = action[6:].split('=')
                     value = float(value)
+                    if product == 'grapes':
+                        value = value * 5
+                    if product == 'labour':
+                        value = value * 5.0 / 11.0
                     interv = farm_model.intervention.PriceIntervention(i, product, value)
             else:
                 print 'WARNING: Unknown intervention', action
