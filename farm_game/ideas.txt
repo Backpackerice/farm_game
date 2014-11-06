@@ -24,7 +24,7 @@ Blue-sky random ideas for the game
     - Clicking on an intervention just changes what you're looking at (like tabs)
     - No stacking of the same intervention
 - When you make a change, see how it'll affect the future
-    - (annoying to have to click on 'do nothing' over and over
+    - (annoying to have to click on 'do nothing' over and over)
 
     
-
+- Use laptops with large displays!
