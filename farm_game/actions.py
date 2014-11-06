@@ -124,7 +124,7 @@ class Actions(object):
         a = Action(self)
         a.desc = '''Make no policy changes.'''
         a.code = 'none'
-        a.short_desc = 'nothing new'
+        a.short_desc = 'Nothing new'
         a.add_button(label='Do Nothing')
 
         a = Action(self)
@@ -135,7 +135,7 @@ class Actions(object):
         Additional income to farmers for organic peaches: ${p_org}.
         One-time public cost: ${fixed_cost}'''
         a.code = 'local:{p_conv},{p_org},{fixed_cost}'
-        a.short_desc = 'Local:${p_conv},${p_org}|${fixed_cost}'
+        a.short_desc = 'Local: ${p_conv}, ${p_org} | ${fixed_cost}'
         a.add_button(p_conv=1, p_org=1, fixed_cost=10000,
                      label="Local Markets")
 
@@ -147,7 +147,7 @@ class Actions(object):
         Additional retail income for all peaches: ${retail}.
         One-time public cost: ${fixed_cost}'''
         a.code = 'quality:{price},{retail},{fixed_cost}'
-        a.short_desc = 'Qual=${price},${retail}|${fixed_cost}'
+        a.short_desc = 'Qual: ${price}, ${retail} | ${fixed_cost}'
         a.add_button(price=1, retail=1, fixed_cost=10000,
                      label="Quality and Shipping")
 
@@ -155,71 +155,71 @@ class Actions(object):
         a.add_parameter('price', min=0, max=100.0, decimals=2)
         a.desc = '''Farmer's selling price for grapes: ${price}.'''
         a.code = 'price:grapes={price}'
-        a.short_desc = 'Compete.Price=${price}'
+        a.short_desc = 'Compete. Price: ${price}'
         a.add_button(price=15, label="Competitor's Price")
 
         a = Action(self)
         a.add_parameter('wage', min=0, max=20.0, decimals=2)
         a.desc = '''Cost of labour: ${wage}/hr.'''
         a.code = 'price:labour={wage}'
-        a.short_desc = 'Min.Wage=${wage}'
+        a.short_desc = 'Min. Wage = ${wage}'
         a.add_button(wage=5, label='Minimum Wage')
 
         a = Action(self)
         a.add_parameter('percent', min=0, max=100.0, decimals=0)
         a.desc = '''Create a {percent}% subsidy on certification.'''
         a.code = 'subsidy:certification,{percent}'
-        a.short_desc = 'Cert.Subsidy={percent}%'
+        a.short_desc = 'Cert. Subsidy: {percent}%'
         a.add_button(percent=50, label='Certification Subsidy')
 
-        a = Action(self)
-        a.add_parameter('price', min=0.01, max=100.0, decimals=2)
-        a.desc = '''Price for organic Baby Gold peaches: ${price}'''
-        a.code = 'price:peachesOrganicBabyGold={price}'
-        a.short_desc = 'Org.BabyGold={price}'
-        a.add_button(price=65)
+        # a = Action(self)
+        # a.add_parameter('price', min=0.01, max=100.0, decimals=2)
+        # a.desc = '''Price for organic Baby Gold peaches: ${price}'''
+        # a.code = 'price:peachesOrganicBabyGold={price}'
+        # a.short_desc = 'Org.BabyGold={price}'
+        # a.add_button(price=65)
 
-        a = Action(self)
-        a.add_parameter('price', min=0.01, max=100.0, decimals=2)
-        a.desc = '''Price for non-organic Baby Gold peaches: ${price}'''
-        a.code = 'price:peachesBabyGold={price}'
-        a.short_desc = 'BabyGold={price}'
-        a.add_button(price=55)
+        # a = Action(self)
+        # a.add_parameter('price', min=0.01, max=100.0, decimals=2)
+        # a.desc = '''Price for non-organic Baby Gold peaches: ${price}'''
+        # a.code = 'price:peachesBabyGold={price}'
+        # a.short_desc = 'BabyGold={price}'
+        # a.add_button(price=55)
 
-        a = Action(self)
-        a.add_parameter('price', min=0.01, max=100.0, decimals=2)
-        a.desc = '''Price for organic Red Haven peaches: ${price}'''
-        a.code = 'price:peachesOrganicRedhaven={price}'
-        a.short_desc = 'Org.RedHaven={price}'
-        a.add_button(price=65)
+        # a = Action(self)
+        # a.add_parameter('price', min=0.01, max=100.0, decimals=2)
+        # a.desc = '''Price for organic Red Haven peaches: ${price}'''
+        # a.code = 'price:peachesOrganicRedhaven={price}'
+        # a.short_desc = 'Org.RedHaven={price}'
+        # a.add_button(price=65)
 
-        a = Action(self)
-        a.add_parameter('price', min=0.01, max=100.0, decimals=2)
-        a.desc = '''Price for non-organic Red Haven peaches: ${price}'''
-        a.code = 'price:peachesRedhaven={price}'
-        a.short_desc = 'RedHaven={price}'
-        a.add_button(price=55)
+        # a = Action(self)
+        # a.add_parameter('price', min=0.01, max=100.0, decimals=2)
+        # a.desc = '''Price for non-organic Red Haven peaches: ${price}'''
+        # a.code = 'price:peachesRedhaven={price}'
+        # a.short_desc = 'RedHaven={price}'
+        # a.add_button(price=55)
 
-        a = Action(self)
-        a.add_parameter('price', min=0.01, max=100.0, decimals=2)
-        a.desc = '''Price for grapes: ${price}'''
-        a.code = 'price:grapes={price}'
-        a.short_desc = 'grapes={price}'
-        a.add_button(price=15)
+        # a = Action(self)
+        # a.add_parameter('price', min=0.01, max=100.0, decimals=2)
+        # a.desc = '''Price for grapes: ${price}'''
+        # a.code = 'price:grapes={price}'
+        # a.short_desc = 'grapes={price}'
+        # a.add_button(price=15)
 
-        a = Action(self)
-        a.add_parameter('price', min=0.01, max=100.0, decimals=2)
-        a.desc = '''Cost of labour: ${price}'''
-        a.code = 'price:labour={price}'
-        a.short_desc = 'labour={price}'
-        a.add_button(price=5)
+        # a = Action(self)
+        # a.add_parameter('price', min=0.01, max=100.0, decimals=2)
+        # a.desc = '''Cost of labour: ${price}'''
+        # a.code = 'price:labour={price}'
+        # a.short_desc = 'labour={price}'
+        # a.add_button(price=5)
 
-        a = Action(self)
-        a.add_parameter('price', min=0.01, max=10.0, decimals=2)
-        a.desc = '''Cost of Certification: ${price}'''
-        a.code = 'price:certification={price}'
-        a.short_desc = 'certification={price}'
-        a.add_button(price=1)
+        # a = Action(self)
+        # a.add_parameter('price', min=0.01, max=10.0, decimals=2)
+        # a.desc = '''Cost of Certification: ${price}'''
+        # a.code = 'price:certification={price}'
+        # a.short_desc = 'certification={price}'
+        # a.add_button(price=1)
 
 
 
