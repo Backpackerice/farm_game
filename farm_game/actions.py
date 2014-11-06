@@ -148,11 +148,15 @@ class Actions(object):
         a.add_parameter('price', min=0, max=1.0, decimals=2)
         a.add_parameter('retail', min=0, max=1.0, decimals=2)
         a.add_parameter('yield_inc', min=0.0, max=100.0, decimals=0)
-        a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
-        a.desc = '''Premium for higher quality and longer life to farmers: ${price}/lb.
-        Premium for higher quality and longer life to retailers: ${retail}/lb.
-        Increased yield due to less waste: {yield_inc}%
-        One-time cost per farmer: ${fixed_cost}/farm.'''
+        a.add_parameter('fixed_cost', min=0, max=20000, decimals=0)
+        a.desc = '''<strong>Slider 1</strong>: Premium for higher quality and longer life to farmers: <strong>${price}/lb</strong>.
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <strong>Slider 2:</strong> Premium for higher quality and longer life to retailers: <strong>${retail}/lb.</strong><br/>
+        <strong>Slider 3:</strong> Increased yield due to less waste: <strong>{yield_inc}%</strong>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <strong>Slider 4:</strong> One-time public cost per farmer: <strong>${fixed_cost}/farm</strong>.'''
         a.code = 'quality:{price},{retail},{yield_inc},{fixed_cost}'
         a.short_desc = 'Qual: ${price}, ${retail}, {yield_inc}% | ${fixed_cost}'
         a.add_button(price=0.05, retail=0.05, fixed_cost=1000, yield_inc=0,

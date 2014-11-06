@@ -140,20 +140,20 @@ def run(seed, *actions):
                 pass
             elif action.startswith('subsidy:'):
                 product, percent = action[8:].split(',')
-                percent=float(percent)
+                percent=float(percent) * 20
                 interv = farm_model.intervention.SubsidyIntervention(i, product, percent)
             elif action.startswith('quality:'):
                 price, retail, yield_inc, fixed_cost = action[8:].split(',')
-                price = float(price)
-                retail = float(retail)
+                price = float(price) * 10
+                retail = float(retail) * 10
                 yield_inc = float(yield_inc) / 100.0
-                fixed_cost = float(fixed_cost)
+                fixed_cost = float(fixed_cost) * 49
                 interv = farm_model.intervention.QualityAndShippingIntervention(
                         i, price, retail, yield_inc, fixed_cost)
             elif action.startswith('local:'):
                 price_conv, price_org, fixed_cost = action[6:].split(',')
                 interv = farm_model.intervention.LocalMarketIntervention(
-                        i, float(price_conv), float(price_org),
+                        i, float(price_conv) * 10, float(price_org) * 10,
                         float(fixed_cost))
             elif action.startswith('price:'):
                 if '*' in action[6:]:

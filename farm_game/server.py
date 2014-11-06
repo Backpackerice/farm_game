@@ -98,7 +98,7 @@ class Server(farm_game.swi.SimpleWebInterface):
 
             runtime = len(data[uuid]['total_income'])
 
-            income = sum(data[uuid]['total_income']) / runtime
+            income = sum(data[uuid]['total_income']) * 0.004 / runtime
             carbon = sum(data[uuid]['prod_carbon']) / runtime
             govt_cost = sum(data[uuid]['prod_govt_cost']) / runtime
             retail_profit = sum(data[uuid]['prod_retail_profit']) / runtime
@@ -215,7 +215,7 @@ class Server(farm_game.swi.SimpleWebInterface):
             values.append(dict(x=Server.maximum_steps, y=None))
             time.append(dict(values=values, key=key[4:], color=color, area=False))
 
-        graph_money = self.make_graph(data, ('total_income', 'income', 0.000001))
+        graph_money = self.make_graph(data, ('total_income', 'income', 0.004))
         graph_carbon = self.make_graph(data, ('prod_carbon', 'carbon', 1.0))
         graph_govt_cost = self.make_graph(data, ('prod_govt_cost', 'public costs', 1.0))
         graph_retail_profit = self.make_graph(data, ('prod_retail_profit', 'extra retail profit', 1.0))

@@ -21,7 +21,7 @@ activities = {
         'products': {
             'peachesRedhaven': '35 if farm.counter.red_haven > 7 else 0', 		# total tons per km^2/year
             'nitrogen': -10,		# kg per km^2/year
-            'carbon': 20,		# tons per km^2/year
+            'carbon': 10,		# tons per km^2/year
             'soil': -0.001,		# inches per km^2/year
             'labour': -200,		# hours per km^2/year
             'certification': 0,
@@ -43,7 +43,7 @@ activities = {
             'peachesOrganicRedhaven': '30 if farm.counter.red_haven > 7 and farm.counter.organic > 3 else 0', 		# total tons per km^2?
             'peachesRedhaven': '30 if farm.counter.red_haven > 7 and farm.counter.organic <= 3 else 0', 		# total tons per km^2?
             'nitrogen': 0,
-            'carbon': 10,		# tons per km^2?
+            'carbon': 2,		# tons per km^2?
             'soil': 0.001,		# inches per km^2?
             'labour': -220,		# hours per km^2/year
             'certification': -10, # $/(km^2 year)
@@ -66,7 +66,7 @@ activities = {
         'products': {
             'peachesBabyGold': '35 if farm.counter.baby_gold > 7 else 0', 		# total tons per km^2/year
             'nitrogen': -10,		# kg per km^2/year
-            'carbon': 20,		# tons per km^2/year
+            'carbon': 10,		# tons per km^2/year
             'soil': -0.001,		# inches per km^2/year
             'labour': -200,		# hours per km^2/year
             'certification': 0,
@@ -88,7 +88,7 @@ activities = {
             'peachesOrganicBabyGold': '30 if farm.counter.baby_gold > 7 and farm.counter.organic > 3 else 0', 		# total tons per km^2?
             'peachesBabyGold': '30 if farm.counter.baby_gold > 7 and farm.counter.organic <= 3 else 0', 		# total tons per km^2?
             'nitrogen': 0,
-            'carbon': 10,		# tons per km^2?
+            'carbon': 2,		# tons per km^2?
             'soil': 0.001,		# inches per km^2?
             'labour': -220,		# hours per km^2/year
             'certification': -10, # $/(km^2 year)
@@ -110,7 +110,7 @@ activities = {
         'products': {
             'grapes': 35, 		# total tons per km^2/year
             'nitrogen': -10,		# kg per km^2/year
-            'carbon': 20,		# tons per km^2/year
+            'carbon': 10,		# tons per km^2/year
             'soil': -0.001,		# inches per km^2/year
             'labour': -200,		# hours per km^2/year
             'certification': 0,
