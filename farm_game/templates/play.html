@@ -101,7 +101,6 @@ function update_seed() {
     data.append('uuid', '%(uuid)s');
     data.append('seed', seed);
     data.append('action', 'init');
-    data.append('action_text', '');
     
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/play.json', true);
