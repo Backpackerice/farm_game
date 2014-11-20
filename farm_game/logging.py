@@ -16,7 +16,7 @@ class Logging(object):
         username = username.replace(',', ' ')
 
         line = '%s, %s, %s, %s, %s\n' % (t, user, username, seed,
-                                        ','.join(actions))
+                                        '|'.join(actions))
 
         with open(self.filename, 'a') as f:
             f.write(line)
@@ -34,7 +34,7 @@ class Logging(object):
             t, user, username, seed, actions = line
             if userid is None or user == userid:
                 t = time.strptime(t, '%Y%m%d-%H%M%S')
-                actions = actions.split(',')
+                actions = actions.split('|')
                 data.append((t, user, username, seed, actions))
         f.close()
         return data

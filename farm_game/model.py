@@ -129,50 +129,58 @@ def find_cached_model(seed, actions):
 @memoize
 def run(seed, *actions):
     step, model = find_cached_model(seed, actions)
-    for i, action in enumerate(actions):
+    for i, act in enumerate(actions):
         if i > step:
-            # add intervention
-            interv = None
+            for action in act.split(';'):
+                # add intervention
+                interv = None
 
-            if action == 'init':
-                pass
-            elif action == 'none':
-                pass
-            elif action.startswith('subsidy:'):
-                product, percent = action[8:].split(',')
-                percent=float(percent) * 20
-                interv = farm_model.intervention.SubsidyIntervention(i, product, percent)
-            elif action.startswith('quality:'):
-                price, retail, yield_inc, fixed_cost = action[8:].split(',')
-                price = float(price) * 10
-                retail = float(retail) * 10
-                yield_inc = float(yield_inc) / 100.0
-                fixed_cost = float(fixed_cost) * 49
-                interv = farm_model.intervention.QualityAndShippingIntervention(
-                        i, price, retail, yield_inc, fixed_cost)
-            elif action.startswith('local:'):
-                price_conv, price_org, fixed_cost = action[6:].split(',')
-                interv = farm_model.intervention.LocalMarketIntervention(
-                        i, float(price_conv) * 10, float(price_org) * 10,
-                        float(fixed_cost))
-            elif action.startswith('price:'):
-                if '*' in action[6:]:
-                    product, value = action[6:].split('*')
-                    value = float(value)
-                    interv = farm_model.intervention.PriceScaleIntervention(i, product, value)
-                elif '=' in action[6:]:
-                    product, value = action[6:].split('=')
-                    value = float(value)
-                    if product == 'grapes':
-                        value = value * 5
-                    if product == 'labour':
-                        value = value * 5.0 / 11.0
-                    interv = farm_model.intervention.PriceIntervention(i, product, value)
-            else:
-                print 'WARNING: Unknown intervention', action
+                if action == 'init':
+                    pass
+                elif action == 'none':
+                    pass
+                elif action.startswith('subsidy:'):
+                    product, percent = action[8:].split(',')
+                    percent=float(percent) * 20
+                    interv = farm_model.intervention.SubsidyIntervention(i, product, percent)
+                elif action.startswith('quality:'):
+                    price, retail, yield_inc, fixed_cost = action[8:].split(',')
+                    price = float(price) * 10
+                    retail = float(retail) * 10
+                    yield_inc = float(yield_inc) / 100.0
+                    fixed_cost = float(fixed_cost) * 49
+                    interv = farm_model.intervention.QualityAndShippingIntervention(
+                            i, price, retail, yield_inc, fixed_cost)
+                elif action.startswith('sd:'):
+                    product, q_max, p_max = action[3:].split(',')
+                    scale_price = 5.0;
+                    scale_quantity = 1000.0;
+                    interv = farm_model.intervention.SupplyDemandIntervention(
+                            i, product, q_max=float(q_max) * scale_quantity,
+                                        p_max=float(p_max) * scale_price)
+                elif action.startswith('local:'):
+                    price_conv, price_org, fixed_cost = action[6:].split(',')
+                    interv = farm_model.intervention.LocalMarketIntervention(
+                            i, float(price_conv) * 10, float(price_org) * 10,
+                            float(fixed_cost))
+                elif action.startswith('price:'):
+                    if '*' in action[6:]:
+                        product, value = action[6:].split('*')
+                        value = float(value)
+                        interv = farm_model.intervention.PriceScaleIntervention(i, product, value)
+                    elif '=' in action[6:]:
+                        product, value = action[6:].split('=')
+                        value = float(value)
+                        if product == 'grapes':
+                            value = value * 5
+                        if product == 'labour':
+                            value = value * 5.0 / 11.0
+                        interv = farm_model.intervention.PriceIntervention(i, product, value)
+                else:
+                    print 'WARNING: Unknown intervention', action
 
-            if interv is not None:
-                model.interventions.append(interv)
+                if interv is not None:
+                    model.interventions.append(interv)
 
 
             model.step()
@@ -189,14 +197,15 @@ if __name__ == '__main__':
     #data = run(1, 'init', 'none', 'none', 'price:peachesOrganicBabyGold*20', 'none', 'none', 'none')
     #data = run(2, 'init', 'none', 'subsidy:certification,100', 'none', 'none', 'none', 'none')
     #data = run(2, 'init', 'none', 'none', 'none', 'none', 'none', 'none')
-    data = run(2, 'init', 'none', 'none', 'quality:20,20,10000', 'none', 'none', 'none')
+    #data = run(2, 'init', 'none', 'none', 'quality:20,20,10000', 'none', 'none', 'none')
+    data = run(2, 'init;sd:peachesRedhaven,700000,50', 'none', 'none', 'none', 'none', 'none', 'none')
 
     print data
 
     import pylab
     for k, v in data.items():
         if k.startswith('act_'):
-            pylab.plot(v, label=k[4:])
+            pylab.plot(v, label=k[4:], linewidth=3)
     pylab.legend(loc='best')
     pylab.show()
 

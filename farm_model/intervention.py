@@ -137,7 +137,50 @@ class NewActivityIntervention:
 
     def apply(self, eutopia, time):
         if time == self.time:
-            a = activity.Activity(self.name, aggregate_measures=eutopia.activities.aggregates, **self.activity)
+            a = activity.Activity(self.name,
+                    aggregate_measures=eutopia.activities.aggregates,
+                    **self.activity)
             eutopia.activities.activities.append(a)
+
+class SupplyDemandIntervention:
+    def __init__(self, time, product, p_max, q_max):
+        self.time = time
+        self.product = product
+        self.p_max = p_max
+        self.q_max = q_max
+        self.original_value = None
+
+    def apply(self, eutopia, time):
+        assert time >= self.time
+
+        money = eutopia.activities.aggregates['money']
+
+        if self.original_value is None:
+            self.original_value = money[self.product]
+
+        quantity = 0
+        for f in eutopia.farms:
+            if f.last_activity is not None:
+                quantity += f.last_activity.get_product(self.product, f)
+
+        slope = -self.q_max / self.p_max
+        price = (quantity - self.q_max) / slope
+        if price < 0:
+            price = 0
+
+        print 'time', time, 'quantity', quantity, 'price', price
+
+        difference = price - self.original_value.mean
+
+
+        money[self.product] = self.original_value + difference
+
+
+
+
+
+
+
+
 
 

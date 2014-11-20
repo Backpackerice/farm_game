@@ -16,6 +16,8 @@ all_actions = actions.Actions()
 
 from collections import OrderedDict
 
+import gbm
+
 actions = OrderedDict()
 seeds = {}
 names = {}
@@ -39,6 +41,47 @@ colormap = {
 import farm_model
 for k,v in farm_model.activity.activities.items():
     colormap['act_' + k] = v['color']
+
+products = ['peachesRedhaven', 'peachesOrganicRedhaven',
+            'peachesBabyGold', 'peachesOrganicBabyGold', 'grapes' ]
+
+default_demand_models = [gbm.models.DemandCurve() for k in products]
+# red haven
+default_demand_models[0].params['p_max'].default = 22
+default_demand_models[0].params['q_max'].default = 700
+default_demand_models[0].params['quantity'].default = default_demand_models[0].params['q_max'].default / 2
+# red haven organic
+default_demand_models[1].params['p_max'].default = 26
+default_demand_models[1].params['q_max'].default = 700
+default_demand_models[1].params['quantity'].default = default_demand_models[1].params['q_max'].default / 2
+# baby gold
+default_demand_models[2].params['p_max'].default = 22
+default_demand_models[2].params['q_max'].default = 700
+default_demand_models[2].params['quantity'].default = default_demand_models[2].params['q_max'].default / 2
+# baby gold organic
+default_demand_models[3].params['p_max'].default = 26
+default_demand_models[3].params['q_max'].default = 700
+default_demand_models[3].params['quantity'].default = default_demand_models[3].params['q_max'].default / 2
+# grapes
+default_demand_models[4].params['p_max'].default = 6
+default_demand_models[4].params['q_max'].default = 700
+default_demand_models[4].params['quantity'].default = default_demand_models[4].params['q_max'].default / 2
+
+for i in range(5):
+    default_demand_models[i].params['p_max'].min = 1
+    default_demand_models[i].params['p_max'].max = 40
+    default_demand_models[i].params['q_max'].min = 1
+    default_demand_models[i].params['q_max'].max = 1000
+    default_demand_models[i].params['quantity'].min = 1
+    default_demand_models[i].params['quantity'].max = 1000
+
+default_init = 'init'
+for i, p in enumerate(products):
+    default_init += ';sd:%s,%g,%g' % (p,
+        default_demand_models[i].params['q_max'].default,
+        default_demand_models[i].params['p_max'].default)
+
+
 
 
 
@@ -127,7 +170,7 @@ class Server(farm_game.swi.SimpleWebInterface):
         return name
 
 
-    def swi_play(self, uuid=None, seed=None, loadactions='init'):
+    def swi_play(self, uuid=None, seed=None, loadactions=default_init):
         if uuid is None:
             uuid = str(uuid_package.uuid4())
         if not actions.has_key(uuid):
@@ -141,11 +184,15 @@ class Server(farm_game.swi.SimpleWebInterface):
         if seed is not None:
             seeds[uuid] = int(seed)
 
-        loadactions = loadactions.split(',')
-        actions[uuid] = loadactions
+        la = loadactions
+        if la.startswith('init') and not la.startswith('init;'):
+            la = la.replace('init', default_init)
+        la = la.split('|')
+        actions[uuid] = la
 
         return html % dict(uuid=uuid, name=name, seed=seeds[uuid],
-                           action_buttons=all_actions.make_buttons())
+                           action_buttons=all_actions.make_buttons(),
+                           default_init=loadactions)
 
     def swi_set_name(self, uuid, name):
         names[uuid] = name
@@ -162,7 +209,7 @@ class Server(farm_game.swi.SimpleWebInterface):
 
     def swi_play_json(self, uuid, action, seed=None, replace=None):
         name = self.get_name(uuid)
-        if action == 'init':
+        if action.startswith('init'):
             actions[uuid] = []
         if seed is not None:
             seeds[uuid] = int(seed)
@@ -283,5 +330,50 @@ class Server(farm_game.swi.SimpleWebInterface):
         html = pkgutil.get_data('farm_game', 'templates/history.html')
 
         return html % dict(items=html_items, users=html_users)
+
+
+    def swi_demand(self):
+        html = pkgutil.get_data('farm_game', 'templates/demand.html')
+
+        import gbm
+
+        products = [
+            ('peachesRedhaven', 'Red Haven'),
+            ('peachesOrganicRedhaven', 'Organic Red Haven'),
+            ('peachesBabyGold', 'Baby Gold'),
+            ('peachesOrganicBabyGold', 'Baby Gold'),
+            ('grapes', 'Grapes'),
+            ]
+
+        d = {}
+        for i, (k, title) in enumerate(products):
+            d['title_%d' % i] = title
+            d['key_%d' % i] = k
+            d['sliders_%d' % i] = default_demand_models[i].html_sliders(tag='_%d' % i)
+            d['slider_keys_%d' % i] = default_demand_models[i].params.keys()
+
+        return html % d
+
+
+
+    def swi_demand_json(self, model, index, **params):
+        p = {}
+        for k, v in params.items():
+            if k.startswith('key_'):
+                p[k[4:]] = float(v)
+
+        import gbm
+        model = getattr(gbm.models, model)()
+
+        r = model.run(**p)
+        data = model.plot_nvd3(r)
+
+        return json.dumps(dict(main=data, index=int(index)))
+
+
+
+
+
+
 
 

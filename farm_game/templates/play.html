@@ -33,7 +33,7 @@
         <!--Interventions-->
         <div id='cen'>
         Name: <input id='username' type='text' value='%(name)s' onchange='update_name();'/>
-        <input type='button' value='Restart' onclick='doaction("init");'/>
+        <input type='button' value='Restart' onclick='doaction("%(default_init)s");'/>
         <input type='button' value='Undo' onclick='doaction("undo")';/>
         <input type='button' value='Do nothing' onclick='doaction("none")';/>
         Game #: <input id='seed' type='text' value='%(seed)s' onchange='update_seed(); this.blur();'/>

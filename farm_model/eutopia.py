@@ -48,6 +48,15 @@ if __name__=='__main__':
     interventions = []
     eutopia = Eutopia(farm_count=100, rng=np.random.RandomState(seed=1))
 
+    interventions.append(intervention.SupplyDemandIntervention(
+        0, 'peachesRedhaven', p_max=100, q_max=400000))
+    interventions.append(intervention.SupplyDemandIntervention(
+        0, 'peachesOrganicRedhaven', p_max=150, q_max=400000))
+    interventions.append(intervention.SupplyDemandIntervention(
+        0, 'peachesBabyGold', p_max=100, q_max=400000))
+    interventions.append(intervention.SupplyDemandIntervention(
+        0, 'peachesOrganicBabyGold', p_max=150, q_max=400000))
+
     '''
     interventions.append(intervention.PriceIntervention(5, 'duramSeed', 10))
 
@@ -81,7 +90,7 @@ if __name__=='__main__':
 
 
     activities = []
-    for i in range(10):
+    for i in range(20):
         step()
         activities.append(eutopia.get_activity_count())
 
@@ -89,7 +98,7 @@ if __name__=='__main__':
 
     import pylab
     for name in sorted(eutopia.activities.keys()):
-        pylab.plot(range(10), [a.get(name,0) for a in activities], label=name)
+        pylab.plot(range(20), [a.get(name,0) for a in activities], label=name)
 
     pylab.legend(loc='best')
     pylab.show()
