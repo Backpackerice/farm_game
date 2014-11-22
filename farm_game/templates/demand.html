@@ -178,7 +178,7 @@ nv.addGraph(function() {
           .tickFormat(d3.format(',.0f'));                    
         mychart.yAxis    
           .axisLabel('price')
-          .tickFormat(d3.format(',.0f'));      
+          .tickFormat(d3.format(',.2f'));      
         
         chart_list[i] = mychart;    
     }    
@@ -188,19 +188,22 @@ nv.addGraph(function() {
 function play_with_settings() {
     var action = 'init';
     
-    action += ';sd:peachesRedhaven,' + d3.select('#s_val_0_q_max').text() 
-                                  + ',' + d3.select('#s_val_0_p_max').text()
-    action += ';sd:peachesOrganicRedhaven,' + d3.select('#s_val_1_q_max').text() 
-                                  + ',' + d3.select('#s_val_1_p_max').text()
-    action += ';sd:peachesBabyGold,' + d3.select('#s_val_2_q_max').text() 
-                                  + ',' + d3.select('#s_val_2_p_max').text()
-    action += ';sd:peachesOrganicBabyGold,' + d3.select('#s_val_3_q_max').text() 
-                                  + ',' + d3.select('#s_val_3_p_max').text()
-    action += ';sd:grapes,' + d3.select('#s_val_4_q_max').text() 
-                                  + ',' + d3.select('#s_val_4_p_max').text()
+    action += ';sd:peachesRedhaven,' + d3.select('#s_val_0_p_max').text() 
+                                  + ',' + d3.select('#s_val_0_p_min').text()
+                                  + ',' + d3.select('#s_val_0_slope').text();
+    action += ';sd:peachesOrganicRedhaven,' + d3.select('#s_val_1_p_max').text() 
+                                  + ',' + d3.select('#s_val_1_p_min').text()
+                                  + ',' + d3.select('#s_val_1_slope').text();
+    action += ';sd:peachesBabyGold,' + d3.select('#s_val_2_p_max').text() 
+                                  + ',' + d3.select('#s_val_2_p_min').text()
+                                  + ',' + d3.select('#s_val_2_slope').text();
+    action += ';sd:peachesOrganicBabyGold,' + d3.select('#s_val_3_p_max').text() 
+                                  + ',' + d3.select('#s_val_3_p_min').text()
+                                  + ',' + d3.select('#s_val_3_slope').text();
+    action += ';sd:grapes,' + d3.select('#s_val_4_p_max').text() 
+                                  + ',' + d3.select('#s_val_4_p_min').text()
+                                  + ',' + d3.select('#s_val_4_slope').text();
 
-    console.log(action)
-                                  
     window.open('/play?loadactions=' + action);
 }    
     

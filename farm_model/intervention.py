@@ -1,4 +1,5 @@
 import activity
+import numpy as np
 
 class PriceScaleIntervention:
     def __init__(self, time, product, scale, phase_in_time=0):
@@ -53,7 +54,7 @@ class SubsidyIntervention:
     def apply(self, eutopia, time):
         assert time>=self.time
 
-        if time > self.time + 1: return
+        #if time > self.time + 1: return
 
         money = eutopia.activities.aggregates['money']
         govt_cost = eutopia.activities.aggregates['govt_cost']
@@ -79,7 +80,7 @@ class QualityAndShippingIntervention:
     def apply(self, eutopia, time):
         assert time>=self.time
 
-        if time > self.time + 1: return
+        #if time > self.time + 1: return
 
         money = eutopia.activities.aggregates['money']
         retail = eutopia.activities.aggregates['retail_profit']
@@ -117,7 +118,7 @@ class LocalMarketIntervention:
     def apply(self, eutopia, time):
         assert time>=self.time
 
-        if time > self.time + 1: return
+        #if time > self.time + 1: return
 
         money = eutopia.activities.aggregates['money']
 
@@ -143,11 +144,12 @@ class NewActivityIntervention:
             eutopia.activities.activities.append(a)
 
 class SupplyDemandIntervention:
-    def __init__(self, time, product, p_max, q_max):
+    def __init__(self, time, product, p_max, p_min, slope):
         self.time = time
         self.product = product
         self.p_max = p_max
-        self.q_max = q_max
+        self.p_min = p_min
+        self.slope = slope
         self.original_value = None
 
     def apply(self, eutopia, time):
@@ -163,10 +165,8 @@ class SupplyDemandIntervention:
             if f.last_activity is not None:
                 quantity += f.last_activity.get_product(self.product, f)
 
-        slope = -self.q_max / self.p_max
-        price = (quantity - self.q_max) / slope
-        if price < 0:
-            price = 0
+        slope = -self.slope
+        price = np.maximum(-quantity * 0.001 * self.slope + self.p_max, self.p_min)
 
         print 'time', time, 'quantity', quantity, 'price', price
 

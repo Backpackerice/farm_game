@@ -132,7 +132,7 @@ class Normal:
         return Normal(self.mean + inc, self.sd)
 
 
-noise = 40
+noise = 10
 aggregate_measures = {
     'money': {
         'peachesRedhaven': Normal(55,noise),

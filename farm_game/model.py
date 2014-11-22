@@ -152,12 +152,13 @@ def run(seed, *actions):
                     interv = farm_model.intervention.QualityAndShippingIntervention(
                             i, price, retail, yield_inc, fixed_cost)
                 elif action.startswith('sd:'):
-                    product, q_max, p_max = action[3:].split(',')
-                    scale_price = 5.0;
+                    product, p_max, p_min, slope = action[3:].split(',')
+                    scale_price = 10.0;
                     scale_quantity = 1000.0;
                     interv = farm_model.intervention.SupplyDemandIntervention(
-                            i, product, q_max=float(q_max) * scale_quantity,
-                                        p_max=float(p_max) * scale_price)
+                            i, product, p_max=float(p_max) * scale_price,
+                                        p_min=float(p_min) * scale_price,
+                                        slope=float(slope) / scale_quantity)
                 elif action.startswith('local:'):
                     price_conv, price_org, fixed_cost = action[6:].split(',')
                     interv = farm_model.intervention.LocalMarketIntervention(

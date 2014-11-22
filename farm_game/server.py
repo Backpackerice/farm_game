@@ -47,39 +47,23 @@ products = ['peachesRedhaven', 'peachesOrganicRedhaven',
 
 default_demand_models = [gbm.models.DemandCurve() for k in products]
 # red haven
-default_demand_models[0].params['p_max'].default = 22
-default_demand_models[0].params['q_max'].default = 700
-default_demand_models[0].params['quantity'].default = default_demand_models[0].params['q_max'].default / 2
+default_demand_models[0].params['p_max'].default = 5.5
 # red haven organic
-default_demand_models[1].params['p_max'].default = 26
-default_demand_models[1].params['q_max'].default = 700
-default_demand_models[1].params['quantity'].default = default_demand_models[1].params['q_max'].default / 2
+default_demand_models[1].params['p_max'].default = 6.5
 # baby gold
-default_demand_models[2].params['p_max'].default = 22
-default_demand_models[2].params['q_max'].default = 700
-default_demand_models[2].params['quantity'].default = default_demand_models[2].params['q_max'].default / 2
+default_demand_models[2].params['p_max'].default = 5.5
 # baby gold organic
-default_demand_models[3].params['p_max'].default = 26
-default_demand_models[3].params['q_max'].default = 700
-default_demand_models[3].params['quantity'].default = default_demand_models[3].params['q_max'].default / 2
+default_demand_models[3].params['p_max'].default = 6.5
 # grapes
-default_demand_models[4].params['p_max'].default = 6
-default_demand_models[4].params['q_max'].default = 700
-default_demand_models[4].params['quantity'].default = default_demand_models[4].params['q_max'].default / 2
-
-for i in range(5):
-    default_demand_models[i].params['p_max'].min = 1
-    default_demand_models[i].params['p_max'].max = 40
-    default_demand_models[i].params['q_max'].min = 1
-    default_demand_models[i].params['q_max'].max = 1000
-    default_demand_models[i].params['quantity'].min = 1
-    default_demand_models[i].params['quantity'].max = 1000
+default_demand_models[4].params['p_max'].default = 1.5
 
 default_init = 'init'
 for i, p in enumerate(products):
-    default_init += ';sd:%s,%g,%g' % (p,
-        default_demand_models[i].params['q_max'].default,
-        default_demand_models[i].params['p_max'].default)
+    default_init += ';sd:%s,%g,%g,%g' % (p,
+        default_demand_models[i].params['p_max'].default,
+        default_demand_models[i].params['p_min'].default,
+        default_demand_models[i].params['slope'].default,
+        )
 
 
 
