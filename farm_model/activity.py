@@ -4,6 +4,7 @@
 # http://www.vinelandgrowers.com/index.php?p=Our_Fruit#Peaches
 # http://eap.mcgill.ca/MagRack/BAH/BAH%202.htm econ of fruit production
 
+import copy
 
 
 activities = {
@@ -192,7 +193,7 @@ class Activity:
 
 class Activities:
     def __init__(self):
-        self.aggregates = dict(aggregate_measures)
+        self.aggregates = copy.deepcopy(aggregate_measures)
 
         self.activities = []
         for name, data in activities.items():

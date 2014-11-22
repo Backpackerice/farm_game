@@ -119,6 +119,7 @@ def find_cached_model(seed, actions):
         result = model_cache.get((seed, tuple(actions[:step])), None)
         if result is not None:
             step, model = result
+            print '  found', step
             return step, copy.deepcopy(model)
     model = Model(seed=seed)
     while model.steps < 0 :
@@ -199,7 +200,10 @@ if __name__ == '__main__':
     #data = run(2, 'init', 'none', 'subsidy:certification,100', 'none', 'none', 'none', 'none')
     #data = run(2, 'init', 'none', 'none', 'none', 'none', 'none', 'none')
     #data = run(2, 'init', 'none', 'none', 'quality:20,20,10000', 'none', 'none', 'none')
-    data = run(2, 'init;sd:peachesRedhaven,700000,50', 'none', 'none', 'none', 'none', 'none', 'none')
+    #data = run(3, 'init;sd:peachesRedhaven,100,0,0')#, 'none', 'none')
+    #data = run(2, 'init;sd:peachesRedhaven,100,0,0')#, 'none', 'none')
+    data = run(2, 'init', 'none', 'sd:peachesRedhaven,100,0,0', 'none', 'none')
+    data = run(3, 'init', 'none', 'sd:peachesRedhaven,100,0,0', 'none', 'none')
 
     print data
 
