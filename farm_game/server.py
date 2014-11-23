@@ -3,6 +3,7 @@ import json
 import random
 import uuid as uuid_package
 import time
+import copy
 
 import pkgutil
 import farm_game
@@ -316,7 +317,7 @@ class Server(farm_game.swi.SimpleWebInterface):
         return html % dict(items=html_items, users=html_users)
 
 
-    def swi_demand(self):
+    def swi_demand(self, action=None):
         html = pkgutil.get_data('farm_game', 'templates/demand.html')
 
         import gbm
@@ -329,12 +330,26 @@ class Server(farm_game.swi.SimpleWebInterface):
             ('grapes', 'Grapes'),
             ]
 
+        if action is None:
+            models = default_demand_models
+        else:
+            cfg = action.split(';')
+            assert len(cfg) == 5
+            models = copy.deepcopy(default_demand_models)
+            for i, code in enumerate(cfg):
+                assert code[:3] == 'sd:'
+                name, p_max, p_min, slope = code[3:].split(',')
+                assert name == products[i][0]
+                models[i].params['p_max'].default = float(p_max)
+                models[i].params['p_min'].default = float(p_min)
+                models[i].params['slope'].default = float(slope)
+
         d = {}
         for i, (k, title) in enumerate(products):
             d['title_%d' % i] = title
             d['key_%d' % i] = k
-            d['sliders_%d' % i] = default_demand_models[i].html_sliders(tag='_%d' % i)
-            d['slider_keys_%d' % i] = default_demand_models[i].params.keys()
+            d['sliders_%d' % i] = models[i].html_sliders(tag='_%d' % i)
+            d['slider_keys_%d' % i] = models[i].params.keys()
 
         return html % d
 
@@ -353,6 +368,28 @@ class Server(farm_game.swi.SimpleWebInterface):
         data = model.plot_nvd3(r)
 
         return json.dumps(dict(main=data, index=int(index)))
+
+
+    def swi_save_demand(self, name, action):
+        # sanitize the string, removing invalid characters
+        name = "".join(x if x.isalnum() else '_' for x in name)
+
+        with open('save_demand_%s.txt' % name, 'w') as f:
+            f.write(action)
+
+        return self.swi_load_demand()
+
+    def swi_load_demand(self):
+        scenarios = []
+        for fn in os.listdir('.'):
+            if fn.startswith('save_demand_'):
+                name = fn[12:-4]
+                with open(fn) as f:
+                    action = f.read().strip()
+                scenarios.append('<li><a href="/demand?action=%s">%s</a></li>' %
+                                 (action, name))
+        return ''.join(scenarios)
+
 
 
 

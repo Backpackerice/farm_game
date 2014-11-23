@@ -146,8 +146,10 @@ function update_result() {
     </div>    
     
     <div id='play_game'>
-        <input type='button' value='Play with these settings' onclick='play_with_settings();'/>
-        <input type='button' value='Reset demand curves' onclick='reset_curves();'/>
+        <input type='button' value='Play with these settings' onclick='play_with_settings();'/><br/>
+        <input type='button' value='Reset all sliders' onclick='reset_curves();'/><br/>
+        <input type='text' value='' id='save_name' size='10'/><input type='button' value='Save this scenario' onclick='save_scenario();'/><br/>
+        <input type='button' value='Load a scenario' onclick='load_scenario();'/>
     
     </div>
 
@@ -186,10 +188,8 @@ nv.addGraph(function() {
     });
 
     
-function play_with_settings() {
-    var action = 'init';
-    
-    action += ';sd:peachesRedhaven,' + d3.select('#s_val_0_p_max').text() 
+function action_text() {    
+    var action = 'sd:peachesRedhaven,' + d3.select('#s_val_0_p_max').text() 
                                   + ',' + d3.select('#s_val_0_p_min').text()
                                   + ',' + d3.select('#s_val_0_slope').text();
     action += ';sd:peachesOrganicRedhaven,' + d3.select('#s_val_1_p_max').text() 
@@ -204,12 +204,29 @@ function play_with_settings() {
     action += ';sd:grapes,' + d3.select('#s_val_4_p_max').text() 
                                   + ',' + d3.select('#s_val_4_p_min').text()
                                   + ',' + d3.select('#s_val_4_slope').text();
-
+    return action;
+}
+    
+function play_with_settings() {
+    var action = 'init;' + action_text();
     window.open('/play?loadactions=' + action);
 }    
 
 function reset_curves() {
     window.location.href = '/demand';
+}
+
+function save_scenario() {
+    var save_name = document.getElementById('save_name').value
+    if (save_name.length == 0) {
+        alert('You must specify a name to save this scenario under');
+    } else {
+        window.location.href = '/save_demand?name=' + save_name + '&action=' + action_text();
+    }
+}
+
+function load_scenario() {
+    window.location.href = '/load_demand';
 }
 
     
