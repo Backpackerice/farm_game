@@ -19,6 +19,7 @@ from collections import OrderedDict
 
 import gbm
 
+
 actions = OrderedDict()
 seeds = {}
 names = {}
@@ -58,13 +59,17 @@ default_demand_models[3].params['p_max'].default = 6.5
 # grapes
 default_demand_models[4].params['p_max'].default = 1.5
 
+print 'p_max'
+print 'p_mim'
+
 default_init = 'init'
-for i, p in enumerate(products):
-    default_init += ';sd:%s,%g,%g,%g' % (p,
-        default_demand_models[i].params['p_max'].default,
-        default_demand_models[i].params['p_min'].default,
-        default_demand_models[i].params['slope'].default,
-        )
+# MAIN PIECE- SETS CURVS TO DEFAULTS IN INITIAL SETTINGS
+# for i, p in enumerate(products):
+#     default_init += ';sd:%s,%g,%g,%g' % (p,
+#         default_demand_models[i].params['p_max'].default,
+#         default_demand_models[i].params['p_min'].default,
+#         default_demand_models[i].params['slope'].default,
+#         )
 
 
 
@@ -144,7 +149,7 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         return json.dumps(dict(bar=bar))
 
-    def get_name(self, uuid):
+    def get_name(self, uuid=None):
         if isinstance(uuid, uuid_package.UUID):
             uuid = str(uuid)
         if uuid not in names:
@@ -179,6 +184,9 @@ class Server(farm_game.swi.SimpleWebInterface):
                            action_buttons=all_actions.make_buttons(),
                            default_init=loadactions)
 
+
+        
+
     def swi_set_name(self, uuid, name):
         names[uuid] = name
 
@@ -193,6 +201,56 @@ class Server(farm_game.swi.SimpleWebInterface):
 
 
     def swi_play_json(self, uuid, action, seed=None, replace=None):
+        name = self.get_name(uuid)
+        if action.startswith('init'):
+            actions[uuid] = []
+        if seed is not None:
+            seeds[uuid] = int(seed)
+
+        if action == 'undo':
+            if len(actions[uuid]) > 1:
+                del actions[uuid][-1]
+        elif action == 'reload':
+            pass
+        elif len(actions[uuid]) >= Server.maximum_steps:
+            pass
+        else:
+            if replace:
+                if len(actions[uuid]) > 1:
+                    del actions[uuid][-1]
+
+            actions[uuid].append(action)
+
+        log.record(uuid, names[uuid], seeds[uuid], actions[uuid])
+
+        return self.generate_json_data(uuid)
+
+
+    def swi_play2(self, uuid=None, seed=None, loadactions=default_init):
+        if uuid is None:
+            uuid = str(uuid_package.uuid4())
+        if not actions.has_key(uuid):
+            actions[uuid] = []
+            seeds[uuid] = uuid_package.UUID(uuid).int & 0x7fffffff
+        if self.user is None:
+            return self.create_login_form()
+        html = pkgutil.get_data('farm_game', 'templates/play.html')
+        name = self.get_name(uuid)
+
+        if seed is not None:
+            seeds[uuid] = int(seed)
+
+        la = loadactions
+        if la.startswith('init') and not la.startswith('init;'):
+            la = la.replace('init', default_init)
+        la = la.split('|')
+        actions[uuid] = la
+
+        return html % dict(uuid=uuid, name=name, seed=seeds[uuid],
+                           action_buttons=all_actions.make_buttons(),
+                           default_init=loadactions)        
+
+    def swi_play2_json(self, uuid, action, seed=None, replace=None):
         name = self.get_name(uuid)
         if action.startswith('init'):
             actions[uuid] = []
