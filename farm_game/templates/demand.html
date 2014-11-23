@@ -175,10 +175,10 @@ nv.addGraph(function() {
               })
       
         mychart.xAxis     //Chart x-axis settings
-          .axisLabel('quantity')
+          .axisLabel('quantity (%%)')
           .tickFormat(d3.format(',.0f'));                    
         mychart.yAxis    
-          .axisLabel('price')
+          .axisLabel('price ($/lb)')
           .tickFormat(d3.format(',.2f'));      
         
         chart_list[i] = mychart;    
