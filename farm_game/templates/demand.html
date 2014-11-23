@@ -147,6 +147,7 @@ function update_result() {
     
     <div id='play_game'>
         <input type='button' value='Play with these settings' onclick='play_with_settings();'/>
+        <input type='button' value='Reset demand curves' onclick='reset_curves();'/>
     
     </div>
 
@@ -206,6 +207,11 @@ function play_with_settings() {
 
     window.open('/play?loadactions=' + action);
 }    
+
+function reset_curves() {
+    window.location.href = '/demand';
+}
+
     
 </script>      
       

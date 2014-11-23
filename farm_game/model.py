@@ -154,8 +154,8 @@ def run(seed, *actions):
                             i, price, retail, yield_inc, fixed_cost)
                 elif action.startswith('sd:'):
                     product, p_max, p_min, slope = action[3:].split(',')
-                    scale_price = 10.0;
-                    scale_quantity = 1000.0;
+                    scale_price = 10.0
+                    scale_quantity = 1500
                     interv = farm_model.intervention.SupplyDemandIntervention(
                             i, product, p_max=float(p_max) * scale_price,
                                         p_min=float(p_min) * scale_price,

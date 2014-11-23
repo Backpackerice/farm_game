@@ -69,6 +69,20 @@ body, button, input {
   font-weight: bold;
 }
     
+#play_game {
+    right: 0;
+    display: inline-block;
+    width: 45%;
+    background: lightblue;
+    margin: 5px;
+    text-align: center;
+    }
+    
+#play_game input {
+    font-size: 200%;
+    }
+    
+    
     
     
     

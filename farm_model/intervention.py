@@ -165,8 +165,7 @@ class SupplyDemandIntervention:
             if f.last_activity is not None:
                 quantity += f.last_activity.get_product(self.product, f)
 
-        slope = -self.slope
-        price = np.maximum(-quantity * 0.001 * self.slope + self.p_max, self.p_min)
+        price = np.maximum(-quantity * 0.001 * self.p_max * self.slope + self.p_max, self.p_min)
 
         print 'time', time, 'quantity', quantity, 'price', price
 
