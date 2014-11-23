@@ -380,15 +380,20 @@ class Server(farm_game.swi.SimpleWebInterface):
         return self.swi_load_demand()
 
     def swi_load_demand(self):
+        html = pkgutil.get_data('farm_game', 'templates/load_demand.html')
+
         scenarios = []
         for fn in os.listdir('.'):
             if fn.startswith('save_demand_'):
                 name = fn[12:-4]
                 with open(fn) as f:
                     action = f.read().strip()
-                scenarios.append('<li><a href="/demand?action=%s">%s</a></li>' %
-                                 (action, name))
-        return ''.join(scenarios)
+                text = '''<li><input type="button" value="%(name)s"
+                                     onclick="window.location.href='/play?loadactions=init;%(action)s';"/>
+                              <a href="/demand?action=%(action)s">edit</a></li>
+                       ''' % dict(action=action, name=name)
+                scenarios.append(text)
+        return html % dict(scenarios=''.join(scenarios))
 
 
 
