@@ -35,7 +35,7 @@
         Name: <input id='username' type='text' value='%(name)s' onchange='update_name();'/>
         <input type='button' value='Restart' onclick='doaction("%(default_init)s");'/>
         <input type='button' value='Undo' onclick='doaction("undo")';/>
-        <input type='button' value='Do nothing' onclick='doaction("none")';/>
+        <input type='button' value='Do Nothing' onclick='doaction("none")';/>
         Game #: <input id='seed' type='text' value='%(seed)s' onchange='update_seed(); this.blur();'/>
         <input type='button' value='Adjust Demand' onclick="window.location.href = '/demand'";/>
         <br/>
@@ -62,6 +62,10 @@
         <svg></svg>
       </div>
       
+      <div id='chart_test' class='small_chart'>
+        <svg></svg>
+      </div>
+
       <div id='chart_carbon' class='small_chart'>
         <svg></svg>
       </div>
@@ -158,6 +162,28 @@ nv.addGraph(function() {
     return chart_money;
     });
 
+var chart_test;
+nv.addGraph(function() {
+    chart_test = nv.models.lineChart()
+                    .useInteractiveGuideline(true)
+                    .forceY([0, 10])
+     .options({
+    margin: {left: 80, bottom: 30},
+    showXAxis: false,
+    showYAxis: true,
+    showLegend: false,    
+    transitionDuration: 250
+  })
+                    
+    chart_test.xAxis     //Chart x-axis settings
+      .axisLabel('Test X')
+      .tickFormat(d3.format(',.2f'));                    
+    chart_test.yAxis    
+      .axisLabel('Test Y')
+      .tickFormat(d3.format(',.2f'));      
+  
+    return chart_test;
+    });
     
 var chart_carbon;
 nv.addGraph(function() {
@@ -264,6 +290,11 @@ function update() {
         .datum(data.graph_money)
         .call(chart_money);
     nv.utils.windowResize(chart_money.update);
+
+    d3.select('#chart_test svg')
+        .datum(data.graph_test)
+        .call(chart_test);
+    nv.utils.windowResize(chart_test.update);
 
     d3.select('#chart_carbon svg')
         .datum(data.graph_carbon)

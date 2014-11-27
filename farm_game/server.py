@@ -306,6 +306,7 @@ class Server(farm_game.swi.SimpleWebInterface):
             time.append(dict(values=values, key=key[4:], color=color, area=False))
 
         graph_money = self.make_graph(data, ('total_income', 'income', 0.004))
+        graph_test = self.make_graph(data, ('prod_govt_cost', 'public costs', 0.5))
         graph_carbon = self.make_graph(data, ('prod_carbon', 'carbon', 1.0))
         graph_govt_cost = self.make_graph(data, ('prod_govt_cost', 'public costs', 1.0))
         graph_retail_profit = self.make_graph(data, ('prod_retail_profit', 'extra retail profit', 1.0))
@@ -332,6 +333,7 @@ class Server(farm_game.swi.SimpleWebInterface):
 
         return json.dumps(dict(time=time, grid=grid, actions=a,
                                graph_money=graph_money,
+                               graph_test=graph_test,
                                graph_carbon=graph_carbon,
                                graph_govt_cost=graph_govt_cost,
                                graph_retail_profit=graph_retail_profit,

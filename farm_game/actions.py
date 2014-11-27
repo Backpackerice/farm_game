@@ -126,68 +126,119 @@ class Actions(object):
     def make_actions(self):
 
         # INTERVENTIONS
+            # New varieties
+            # Storage and shipping
+            # Value added processing
+            # Marketing/education
+            # Organics
+            # Trade
+        #  POSSIBLE INSIGHTS
+            # Some don't have much impact (marketing and education?)
+            # Need a few (e.g. marketing at the right time to support processing)
+            # Local market loyalty helps
+            # Insight into when the system is vunerable to labour or fuel price changes, or public good pricing changes.
+            # Understand the nature of overshoot.
+
+        #a = Action(self)
+        #a.desc = '''Make no policy changes.'''
+        #a.code = 'none'
+        #a.short_desc = 'Nothing New'
+        # a.add_button(label='Do Nothing')
+
         a = Action(self)
-        a.desc = '''Make no policy changes.'''
+        a.desc = '''Intervention description and image.''' #Introduce a new variety with earlier harvest.'''
         a.code = 'none'
-        a.short_desc = 'Nothing New'
-        #a.add_button(label='Do Nothing')
+        a.short_desc = 'New Variety'
+        a.add_button() #label="New Variety", style="background:yellow")
 
         a = Action(self)
-        a.add_parameter('p_conv', min=0, max=2.0, decimals=2)
-        a.add_parameter('p_org', min=0, max=2.0, decimals=2)
-        a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
-        a.desc = '''<strong>Slider 1:</strong> Premium paid by consumers for local peaches: ${p_conv}/lb.
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <strong>Slider 2:</strong>  Premium paid by consumers for local organic peaches: ${p_org}/lb.<br/>
-
-        <strong>Slider 3:</strong> One-time public cost for campaign: ${fixed_cost}.'''
-        a.code = 'local:{p_conv},{p_org},{fixed_cost}'
-        a.short_desc = 'Local: ${p_conv}, ${p_org} | ${fixed_cost}'
-        a.add_button(p_conv=0.05, p_org=0.2, fixed_cost=10000,
-                label="Marketing 'Local'", style="background:yellow")
+        a.desc = '''Storage to increase shelf life and reduce waste.'''
+        a.code = 'none'
+        a.short_desc = 'Storage and Shipping'
+        a.add_button() #label="Storage and Shipping") #, style="background:yellow")
 
         a = Action(self)
-        a.add_parameter('price', min=0, max=1.0, decimals=2)
-        a.add_parameter('retail', min=0, max=1.0, decimals=2)
-        a.add_parameter('yield_inc', min=0.0, max=100.0, decimals=0)
-        a.add_parameter('fixed_cost', min=0, max=20000, decimals=0)
-        a.desc = '''<strong>Slider 1</strong>: Premium for higher quality and longer life to farmers: <strong>${price}/lb</strong>.
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <strong>Slider 2:</strong> Premium for higher quality and longer life to retailers: <strong>${retail}/lb.</strong><br/>
-        <strong>Slider 3:</strong> Increased yield due to less waste: <strong>{yield_inc}%</strong>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <strong>Slider 4:</strong> One-time public cost per farmer: <strong>${fixed_cost}/farm</strong>.'''
-        a.code = 'quality:{price},{retail},{yield_inc},{fixed_cost}'
-        a.short_desc = 'Qual: ${price}, ${retail}, {yield_inc}% | ${fixed_cost}'
-        a.add_button(price=0.05, retail=0.05, fixed_cost=1000, yield_inc=0,
-                label="Quality in Shipping", style="background:yellow")
+        a.desc = '''New value added peach based product.'''
+        a.code = 'none'
+        a.short_desc = 'Value Added Processing'
+        a.add_button() #label="Value Added Processing", style="background:yellow")
 
         a = Action(self)
-        a.add_parameter('percent', min=0, max=100.0, decimals=0)
-        a.desc = '''Create a <strong>{percent}%</strong> subsidy on certification and transition costs.'''
-        a.code = 'subsidy:certification,{percent}'
-        a.short_desc = 'Cert. Subsidy: {percent}%'
-        a.add_button(percent=50, label='Certification Subsidy', style="background:yellow")
-
-        # MARKET FORCES/BROADER SYSTEM. PUT ON A DIFFERENT LINE OR COLOUR
-        a = Action(self)
-        a.add_parameter('price', min=0, max=10.0, decimals=2)
-        a.desc = '''Farmer's selling price for grapes, a competing product: <strong>${price}</strong>.'''
-        a.code = 'price:grapes={price}'
-        a.short_desc = 'Compete. Price: ${price}'
-        a.add_button(price=5, label="Competitor's Price")
+        a.desc = '''Marketing and Education.'''
+        a.code = 'none'
+        a.short_desc = 'Marketing/Education'
+        a.add_button() #label="Marketing/Education", style="background:yellow")
 
         a = Action(self)
-        a.add_parameter('wage', min=0, max=20.0, decimals=2)
-        a.desc = '''Cost of labour: <strong>${wage}/hr</strong>.'''
-        a.code = 'price:labour={wage}'
-        a.short_desc = 'Min. Wage = ${wage}'
-        a.add_button(wage=11.00, label='Minimum Wage')
+        a.desc = '''Organic production.'''
+        a.code = 'none'
+        a.short_desc = 'Organics'
+        a.add_button() #label="Organics", style="background:yellow")
 
-        # # ADD A BUTTON FOR PRICE ON CARBON
+        a = Action(self)
+        a.desc = '''Trade with China.'''
+        a.code = 'none'
+        a.short_desc = 'Trade'
+        a.add_button() #label="Trade", style="background:yellow")
+
+
+
+        # a = Action(self)
+        # a.add_parameter('p_conv', min=0, max=2.0, decimals=2)
+        # a.add_parameter('p_org', min=0, max=2.0, decimals=2)
+        # a.add_parameter('fixed_cost', min=0, max=100000, decimals=0)
+        # a.desc = '''<strong>Slider 1:</strong> Premium paid by consumers for local peaches: ${p_conv}/lb.
+        # &nbsp;&nbsp;&nbsp;&nbsp;
+        # &nbsp;&nbsp;&nbsp;&nbsp;
+        # <strong>Slider 2:</strong>  Premium paid by consumers for local organic peaches: ${p_org}/lb.<br/>
+
+        # # <strong>Slider 3:</strong> One-time public cost for campaign: ${fixed_cost}.'''
+        # a.code = 'local:{p_conv},{p_org},{fixed_cost}'
+        # a.short_desc = 'Local: ${p_conv}, ${p_org} | ${fixed_cost}'
+        # a.add_button(p_conv=0.05, p_org=0.2, fixed_cost=10000,
+        #         label="Marketing 'Local'", style="background:yellow")
+
+        # a = Action(self)
+        # a.add_parameter('price', min=0, max=1.0, decimals=2)
+        # a.add_parameter('retail', min=0, max=1.0, decimals=2)
+        # a.add_parameter('yield_inc', min=0.0, max=100.0, decimals=0)
+        # a.add_parameter('fixed_cost', min=0, max=20000, decimals=0)
+        # a.desc = '''<strong>Slider 1</strong>: Premium for higher quality and longer life to farmers: <strong>${price}/lb</strong>.
+        # &nbsp;&nbsp;&nbsp;&nbsp;
+        # &nbsp;&nbsp;&nbsp;&nbsp;
+        # <strong>Slider 2:</strong> Premium for higher quality and longer life to retailers: <strong>${retail}/lb.</strong><br/>
+        # <strong>Slider 3:</strong> Increased yield due to less waste: <strong>{yield_inc}%</strong>
+        # &nbsp;&nbsp;&nbsp;&nbsp;
+        # &nbsp;&nbsp;&nbsp;&nbsp;
+        # <strong>Slider 4:</strong> One-time public cost per farmer: <strong>${fixed_cost}/farm</strong>.'''
+        # a.code = 'quality:{price},{retail},{yield_inc},{fixed_cost}'
+        # a.short_desc = 'Qual: ${price}, ${retail}, {yield_inc}% | ${fixed_cost}'
+        # a.add_button(price=0.05, retail=0.05, fixed_cost=1000, yield_inc=0,
+        #         label="Quality in Shipping", style="background:yellow")
+
+        # a = Action(self)
+        # a.add_parameter('percent', min=0, max=100.0, decimals=0)
+        # a.desc = '''Create a <strong>{percent}%</strong> subsidy on certification and transition costs.'''
+        # a.code = 'subsidy:certification,{percent}'
+        # a.short_desc = 'Cert. Subsidy: {percent}%'
+        # a.add_button(percent=50, label='Certification Subsidy', style="background:yellow")
+
+        # # MARKET FORCES/BROADER SYSTEM. PUT ON A DIFFERENT LINE OR COLOUR
+        # a = Action(self)
+        # a.add_parameter('price', min=0, max=10.0, decimals=2)
+        # a.desc = '''Farmer's selling price for grapes, a competing product: <strong>${price}</strong>.'''
+        # a.code = 'price:grapes={price}'
+        # a.short_desc = 'Compete. Price: ${price}'
+        # a.add_button(price=5, label="Competitor's Price")
+
+        # a = Action(self)
+        # a.add_parameter('wage', min=0, max=20.0, decimals=2)
+        # a.desc = '''Cost of labour: <strong>${wage}/hr</strong>.'''
+        # a.code = 'price:labour={wage}'
+        # a.short_desc = 'Min. Wage = ${wage}'
+        # a.add_button(wage=11.00, label='Minimum Wage')
+
+        # # OLD BUTTONS
         # a = Action(self)
         # a.add_parameter('price', min=0, max=20.0, decimals=2)
         # a.desc = '''Cost of carbon: ${price}/hr.'''
