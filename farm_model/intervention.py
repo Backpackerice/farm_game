@@ -196,13 +196,14 @@ class ArrayPriceIntervention:
         if index >= len(self.values):
             index = len(self.values) - 1
 
-        print index
 
         value = self.values[index]
 
-        scale = value / self.original_value.mean
-
-        money[self.product] = self.original_value * scale
+        if self.original_value.mean == 0:
+            money[self.product] = self.original_value + value
+        else:
+            scale = value / self.original_value.mean
+            money[self.product] = self.original_value * scale
 
 
 

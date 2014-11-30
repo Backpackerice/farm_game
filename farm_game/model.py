@@ -216,7 +216,8 @@ if __name__ == '__main__':
     #data = run(2, 'init;sd:peachesRedhaven,100,0,0')#, 'none', 'none')
     #data = run(2, 'init', 'none', 'sd:peachesRedhaven,100,0,0', 'none', 'none')
     #data = run(3, 'init', 'none', 'sd:peachesRedhaven,100,0,0', 'none', 'none')
-    data = run(3, 'init', 'none', 'arrayprice:peachesRedhaven,20,20,20,0,0,0', 'none', 'none', 'none', 'none', 'none', 'none')
+    #data = run(3, 'init', 'none', 'arrayprice:peachesRedhaven,20,20,20,0,0,0', 'none', 'none', 'none', 'none', 'none', 'none')
+    data = run(3, 'init', 'none', 'arrayprice:carbon,-2,0', 'none', 'none', 'none', 'none', 'none', 'none')
 
     print data
 

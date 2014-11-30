@@ -143,6 +143,7 @@ aggregate_measures = {
         'grapes': Normal(15,noise),
         'labour': Normal(5,1),
         'certification': Normal(1,0),
+        'carbon': Normal(0,0),
         },
     'govt_cost': {
         'certification': Normal(0,0),
