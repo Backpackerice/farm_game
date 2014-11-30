@@ -46,6 +46,7 @@ class Model:
     def init_data(self):
         for name in self.model.activities.keys():
             self.data['act_' + name] = []
+        self.data['test_data'] = [] # TODO: remove temp test_data
         self.data['total_bankbalance'] = []
         self.data['total_income'] = []
         for p in self.products:
@@ -59,10 +60,15 @@ class Model:
             for name in self.model.activities.keys():
                 self.data['act_' + name].append(acts.get(name, 0) * 100.0 /
                                                 float(self.farm_count))
+            self.data['test_data'].append(self.get_test_data()) # TODO: remove temp test_data
             self.data['total_bankbalance'].append(self.get_total_balance())
             self.data['total_income'].append(self.get_total_income())
             for p in self.products:
                 self.data['prod_' + p].append(self.get_product(p))
+
+    # TODO: remove temp test_data
+    def get_test_data(self):
+        return 17 #10.5 + np.random.randn()
 
     def get_total_balance(self):
         return sum([f.bank_balance for f in self.model.families])
