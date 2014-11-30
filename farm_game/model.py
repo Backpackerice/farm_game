@@ -178,6 +178,12 @@ def run(seed, *actions):
                         if product == 'labour':
                             value = value * 5.0 / 11.0
                         interv = farm_model.intervention.PriceIntervention(i, product, value)
+                elif action.startswith('arrayprice:'):
+                    items = action[11:].split(',')
+                    product = items[0]
+                    scale_price = 10.0  # multiply everything by 10 so it's in the same scale as supply-demand curves
+                    values = [float(x) * scale_price for x in items[1:]]
+                    interv = farm_model.intervention.ArrayPriceIntervention(i, product, values)
                 else:
                     print 'WARNING: Unknown intervention', action
 
@@ -202,8 +208,9 @@ if __name__ == '__main__':
     #data = run(2, 'init', 'none', 'none', 'quality:20,20,10000', 'none', 'none', 'none')
     #data = run(3, 'init;sd:peachesRedhaven,100,0,0')#, 'none', 'none')
     #data = run(2, 'init;sd:peachesRedhaven,100,0,0')#, 'none', 'none')
-    data = run(2, 'init', 'none', 'sd:peachesRedhaven,100,0,0', 'none', 'none')
-    data = run(3, 'init', 'none', 'sd:peachesRedhaven,100,0,0', 'none', 'none')
+    #data = run(2, 'init', 'none', 'sd:peachesRedhaven,100,0,0', 'none', 'none')
+    #data = run(3, 'init', 'none', 'sd:peachesRedhaven,100,0,0', 'none', 'none')
+    data = run(3, 'init', 'none', 'arrayprice:peachesRedhaven,20,20,20,0,0,0', 'none', 'none', 'none', 'none', 'none', 'none')
 
     print data
 

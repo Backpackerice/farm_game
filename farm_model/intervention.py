@@ -177,6 +177,32 @@ class SupplyDemandIntervention:
 
 
 
+class ArrayPriceIntervention:
+    def __init__(self, time, product, values):
+        self.time = time
+        self.product = product
+        self.values = values
+        self.original_value = None
+
+    def apply(self, eutopia, time):
+        assert time>=self.time
+
+        money = eutopia.activities.aggregates['money']
+
+        if self.original_value is None:
+            self.original_value = money[self.product]
+
+        index = time - self.time - 1
+        if index >= len(self.values):
+            index = len(self.values) - 1
+
+        print index
+
+        value = self.values[index]
+
+        scale = value / self.original_value.mean
+
+        money[self.product] = self.original_value * scale
 
 
 
